@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Ministère du Docteur B. Silas Gbavou">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f2dc98"/>
+      <stop offset="55%" stop-color="#e0ac33"/>
+      <stop offset="100%" stop-color="#a86e16"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#0a0f1e"/>
+  <circle cx="256" cy="256" r="176" fill="none" stroke="url(#gold)" stroke-width="6" opacity="0.35"/>
+  <path d="M256 96 L272 176 L352 192 L272 208 L256 288 L240 208 L160 192 L240 176 Z" fill="url(#gold)"/>
+  <text x="256" y="404" text-anchor="middle" font-family="Georgia, serif" font-size="132" font-weight="700" fill="url(#gold)">SG</text>
+</svg>
