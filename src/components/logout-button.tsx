@@ -1,10 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export function LogoutButton() {
-  const router = useRouter();
   const [busy, setBusy] = useState(false);
 
   return (
@@ -14,8 +12,9 @@ export function LogoutButton() {
       onClick={async () => {
         setBusy(true);
         await fetch('/api/auth/deconnexion', { method: 'POST' });
-        router.refresh();
-        router.push('/');
+        // Rechargement complet : le layout racine doit être re-rendu côté
+        // serveur pour que l'en-tête repasse en état « déconnecté ».
+        window.location.assign('/');
       }}
       className="btn-quiet !px-4 !py-2 !text-[13px]"
     >

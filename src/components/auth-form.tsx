@@ -1,10 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
-  const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,8 +29,10 @@ export function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
         throw new Error(first ?? data.error ?? 'Une erreur est survenue.');
       }
 
-      router.refresh();
-      router.push(data.role === 'ADMIN' ? '/admin' : '/consultation');
+      // Navigation complète plutôt que router.push : la session vient de
+      // changer, et le cache client du layout racine conserverait sinon
+      // l'en-tête « déconnecté » jusqu'au prochain rechargement.
+      window.location.assign(data.role === 'ADMIN' ? '/admin' : '/consultation');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erreur inattendue.');
       setBusy(false);
