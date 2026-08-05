@@ -1,0 +1,249 @@
+// Schéma de données — Plateforme Dr B. Silas Gbavou
+//
+// Règle des 3 piliers : TOUT contenu (texte, audio, vidéo, livre) est rattaché
+// obligatoirement à un Pillar (Prophétique / Spirituel / Doctrinal) et,
+// facultativement, à une SubRubric imbriquée dans ce pilier.
+//
+// Provider : sqlite en développement. Pour la production, remplacer par
+//   provider = "postgresql"
+// et exécuter `npx prisma db push` (les enums sont volontairement modélisés
+// en String pour rester compatibles avec les deux moteurs).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ───────────────────────────── Utilisateurs ─────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         String   @default("MEMBER") // MEMBER | ADMIN
+  city         String?
+  country      String?
+  phone        String?
+  acceptedLicenseAt DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  conversations Conversation[]
+  threads       Thread[]
+  threadMessages ThreadMessage[]
+  downloads     Download[]
+
+  @@index([role])
+}
+
+// ─────────────────────────── Arborescence ───────────────────────────────
+
+model Pillar {
+  id          String   @id @default(cuid())
+  key         String   @unique // PROPHETIQUE | SPIRITUEL | DOCTRINAL
+  slug        String   @unique
+  title       String
+  tagline     String
+  description String
+  accent      String   @default("gold")
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  subRubrics SubRubric[]
+  contents   Content[]
+}
+
+model SubRubric {
+  id          String  @id @default(cuid())
+  slug        String
+  title       String
+  description String
+  keywords    String  @default("") // liste CSV, guide la classification IA
+  order       Int     @default(0)
+  pillarId    String
+  pillar      Pillar  @relation(fields: [pillarId], references: [id], onDelete: Cascade)
+
+  contents Content[]
+
+  @@unique([pillarId, slug])
+  @@index([pillarId])
+}
+
+// ───────────────────────────── Contenus ─────────────────────────────────
+
+model Content {
+  id      String @id @default(cuid())
+  type    String // ARTICLE | AUDIO | VIDEO | BOOK
+  slug    String @unique
+  title   String
+  summary String @default("")
+  body    String? // texte de l'enseignement écrit (Markdown léger)
+
+  // Vidéo YouTube
+  youtubeId    String?
+  thumbnailUrl String?
+  durationSec  Int?
+  publishedOn  DateTime?
+
+  // Audio (.opus WhatsApp et autres)
+  audioPath String?
+  audioMime String?
+  audioSize Int?
+
+  // Livre PDF
+  filePath  String?
+  fileSize  Int?
+  pageCount Int?
+  coverUrl  String?
+  isbn      String?
+  allowDownload Boolean @default(true)
+
+  // Corpus RAG
+  transcript String? // transcription vidéo/audio, base de l'IA
+
+  // Taxonomie (règle des 3 piliers)
+  pillarId    String
+  pillar      Pillar     @relation(fields: [pillarId], references: [id])
+  subRubricId String?
+  subRubric   SubRubric? @relation(fields: [subRubricId], references: [id])
+
+  autoClassified     Boolean @default(false)
+  classificationNote String?
+
+  status      String    @default("DRAFT") // DRAFT | PUBLISHED | ARCHIVED
+  featured    Boolean   @default(false)
+  tags        String    @default("") // CSV
+  indexedAt   DateTime?
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  chunks    Chunk[]
+  downloads Download[]
+
+  @@index([type, status])
+  @@index([pillarId])
+  @@index([subRubricId])
+}
+
+/// Fragment vectorisé du corpus — brique élémentaire du RAG.
+model Chunk {
+  id        String   @id @default(cuid())
+  contentId String
+  content   Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  index     Int
+  text      String
+  heading   String?
+  charCount Int      @default(0)
+  embedding String // vecteur JSON
+  model     String   @default("local")
+  createdAt DateTime @default(now())
+
+  @@unique([contentId, index])
+  @@index([contentId])
+}
+
+// ───────────────────────── IA conversationnelle ─────────────────────────
+
+model Conversation {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  scope     String   @default("GLOBAL") // GLOBAL | PILLAR | SUBRUBRIC | CONTENT
+  scopeId   String?
+  title     String   @default("Nouvelle conversation")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages ChatMessage[]
+
+  @@index([userId])
+  @@index([scope, scopeId])
+}
+
+model ChatMessage {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           String // user | assistant
+  content        String
+  sources        String? // JSON : [{ contentId, title, slug, type, score }]
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId])
+}
+
+// ─────────────────── Bureau de consultation (messagerie) ────────────────
+
+model Thread {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject   String
+  status    String   @default("OPEN") // OPEN | ANSWERED | CLOSED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages ThreadMessage[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+model ThreadMessage {
+  id        String   @id @default(cuid())
+  threadId  String
+  thread    Thread   @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorRole String  @default("MEMBER") // MEMBER | ADMIN
+  body      String
+  readAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([threadId])
+}
+
+// ──────────────────── Livres : licences et traçabilité ──────────────────
+
+/// Chaque téléchargement génère une licence nominative inscrite dans le PDF.
+model Download {
+  id          String   @id @default(cuid())
+  contentId   String
+  content     Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  licenseCode String   @unique
+  ip          String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+
+  @@index([contentId])
+  @@index([userId])
+}
+
+// ───────────────────────── Contenus du jour ─────────────────────────────
+
+model DailyItem {
+  id        String   @id @default(cuid())
+  kind      String // VERSE | QUOTE
+  date      String // AAAA-MM-JJ ; vide = pool de rotation
+  reference String?
+  text      String
+  author    String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@index([kind, date])
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}

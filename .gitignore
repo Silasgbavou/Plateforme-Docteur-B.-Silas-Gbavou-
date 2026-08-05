@@ -1,0 +1,26 @@
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Environnement
+.env
+.env.local
+.env.*.local
+
+# Base de données locale
+*.db
+*.db-journal
+prisma/dev.db
+prisma/migrations/dev/
+
+# Stockage des fichiers protégés (PDF, audios)
+storage/
+
+# Divers
+.DS_Store
+*.log
+.vercel
+next-env.d.ts
+tsconfig.tsbuildinfo

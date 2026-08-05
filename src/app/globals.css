@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-night-950 text-ivory-100 antialiased;
+    background-image:
+      radial-gradient(1200px 620px at 12% -12%, rgba(233, 195, 92, 0.12), transparent 62%),
+      radial-gradient(900px 520px at 92% -6%, rgba(74, 90, 141, 0.32), transparent 58%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    @apply bg-gold-400/30 text-ivory-50;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-gold-300/70 ring-offset-2 ring-offset-night-950;
+  }
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .surface {
+    @apply rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm;
+  }
+
+  .surface-strong {
+    @apply rounded-2xl border border-white/12 bg-night-900/70 backdrop-blur;
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.22em] text-gold-300/90;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold
+           transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-gradient-to-r from-gold-300 to-gold-500 text-night-950 shadow-gold
+           hover:from-gold-200 hover:to-gold-400 hover:shadow-elevated;
+  }
+
+  .btn-ghost {
+    @apply btn border border-white/15 bg-white/5 text-ivory-100 hover:border-gold-300/50 hover:bg-white/10;
+  }
+
+  .btn-quiet {
+    @apply btn text-ivory-200/80 hover:text-gold-200;
+  }
+
+  .link-underline {
+    @apply relative text-gold-200 transition-colors hover:text-gold-100
+           after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0
+           after:bg-gold-300/70 after:transition-transform hover:after:scale-x-100;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-white/12 bg-night-900/60 px-4 py-2.5 text-sm text-ivory-100
+           placeholder:text-ivory-100/35 transition focus:border-gold-300/60 focus:bg-night-900/90 focus:outline-none;
+  }
+
+  .label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ivory-200/60;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/12 bg-white/5 px-3 py-1
+           text-[11px] font-medium uppercase tracking-wider text-ivory-200/80;
+  }
+
+  .prose-ministry {
+    @apply text-[15.5px] leading-[1.85] text-ivory-100/85;
+  }
+
+  .prose-ministry h2 {
+    @apply mb-3 mt-9 font-display text-2xl text-ivory-50;
+  }
+
+  .prose-ministry h3 {
+    @apply mb-2 mt-7 font-display text-xl text-gold-100;
+  }
+
+  .prose-ministry p {
+    @apply mb-4;
+  }
+
+  .prose-ministry ul {
+    @apply mb-4 ml-5 list-disc space-y-1.5 marker:text-gold-400/70;
+  }
+
+  .prose-ministry ol {
+    @apply mb-4 ml-5 list-decimal space-y-1.5 marker:text-gold-400/70;
+  }
+
+  .prose-ministry blockquote {
+    @apply my-5 border-l-2 border-gold-400/60 pl-4 italic text-ivory-100/75;
+  }
+
+  .prose-ministry strong {
+    @apply font-semibold text-ivory-50;
+  }
+
+  .prose-ministry a {
+    @apply link-underline;
+  }
+
+  /* Zone de lecture protégée : dissuade la copie de masse.
+     Mesure de dissuasion, non un verrou absolu — la protection réelle
+     repose sur la licence nominative apposée dans le PDF. */
+  .no-select {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-white/15;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@media print {
+  /* Le contenu protégé ne doit pas partir à l'imprimante via le navigateur. */
+  .print-protected {
+    display: none !important;
+  }
+}
