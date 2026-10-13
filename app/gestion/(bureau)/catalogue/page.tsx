@@ -6,6 +6,8 @@ import { saveCover } from "@/lib/server/covers";
 import { PILLARS, PILLAR_IDS } from "@/lib/domain/pillars";
 import { Flash, flashUrl } from "@/components/ui/Flash";
 import { audit } from "@/lib/server/audit";
+import { driveConfigured, lastDriveReport } from "@/lib/server/drive";
+import { enqueue } from "@/lib/server/jobs";
 
 const PATH = "/gestion/catalogue";
 const msg = (e: unknown) => (e instanceof Error ? e.message : "Erreur inattendue.");
@@ -88,6 +90,15 @@ async function uploadCover(formData: FormData) {
     target = flashUrl(PATH, "erreur", msg(e));
   }
   redirect(target);
+}
+
+async function syncNow() {
+  "use server";
+  const who = await requireAdmin();
+  if (!driveConfigured()) redirect(flashUrl(PATH, "erreur", "Synchronisation Drive non configurée (compte de service)."));
+  const job = enqueue("drive.sync", {}, "drive.sync");
+  audit(who, "drive.sync.demande", job.id);
+  redirect(flashUrl(PATH, "ok", "Synchronisation demandée : le worker importe les nouvelles révisions en brouillon (voir Tâches)."));
 }
 
 const STATUS_LABEL = { publie: "publiée", a_classer: "à classer (non publiée)", retire: "retirée" } as const;
@@ -208,14 +219,25 @@ export default async function CataloguePage({ searchParams }: { searchParams: Pr
       })}
 
       <section className="admin__panel">
-        <h2>Provenance Google Drive déclarée</h2>
+        <h2>Provenance Google Drive</h2>
+        {driveConfigured() ? (
+          <form action={syncNow} className="actions">
+            <button type="submit" className="btn btn--solid btn--small">Synchroniser le dossier autorisé</button>
+          </form>
+        ) : (
+          <p className="notice">Synchronisation automatique non configurée : partagez le dossier, en lecture, avec un compte de service Google et renseignez GOOGLE_SERVICE_ACCOUNT_JSON (voir docs/EXPLOITATION.md). L&apos;import manuel reste disponible ci-dessus.</p>
+        )}
+        {(() => {
+          const r = lastDriveReport();
+          return r ? <p className="subtle">Dernière synchronisation {new Date(r.at).toLocaleString("fr-FR")} : {r.seen} fichiers, {r.imported} brouillon(s) créé(s), {r.unchanged} inchangé(s), {r.newWorks} œuvre(s) à classer{r.errors.length ? `, ${r.errors.length} erreur(s)` : ""}.</p> : null;
+        })()}
         <p className="subtle">
           Inventaire du dossier autorisé « Livre du Docteur B. Silas Gbavou » relevé le 13 octobre 2026 (métadonnées). La taille et la
           date ne prouvent pas l&apos;identité d&apos;un fichier : seule l&apos;empreinte SHA-256 de l&apos;édition importée fait foi.
         </p>
         <div className="table-wrap" tabIndex={0} role="region" aria-label="Provenance Drive">
           <table className="table">
-            <thead><tr><th>Œuvre</th><th>Nom Drive</th><th>ID</th><th>Taille</th><th>Modifié</th><th>Éditions liées</th></tr></thead>
+            <thead><tr><th>Œuvre</th><th>Nom Drive</th><th>ID</th><th>Taille</th><th>Modifié</th><th>Éditions liées</th><th>Dernier état</th></tr></thead>
             <tbody>
               {drive.map((d) => (
                 <tr key={d.fileId}>
@@ -225,6 +247,7 @@ export default async function CataloguePage({ searchParams }: { searchParams: Pr
                   <td>{(d.sizeBytes / 1024 / 1024).toFixed(2)} Mo</td>
                   <td>{d.modifiedTime?.slice(0, 10)}</td>
                   <td>{d.editionCount}</td>
+                  <td>{d.lastStatus ?? "jamais synchronisé"}</td>
                 </tr>
               ))}
             </tbody>

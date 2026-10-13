@@ -10,7 +10,7 @@ Statuts : **T** testé automatiquement · **I** implémenté, vérifié manuelle
 | Bibliothèque dynamique depuis les œuvres publiées, filtres, état vide | T | E2E bibliothèque |
 | Couvertures réelles | P | Téléversement + WebP au bureau ; aucune couverture originale fournie → reliures typographiques |
 | Éditions immuables (SHA-256, provenance Drive, pages, statut) | T | `pipeline.test.ts` (doublon, autre œuvre, remplacement) |
-| Synchronisation Drive automatique | N | Import manuel/CLI avec ID Drive ; aucune intégration OAuth Drive serveur |
+| Synchronisation Drive (dossier autorisé, lecture seule, brouillons, idempotente, révisions) | T | `drive.test.ts` (faux Drive) ; non exécutée contre le vrai Drive : compte de service à créer et dossier à partager par le propriétaire |
 | OCR des PDF image | N | Pages sans texte détectées et signalées, pas d'OCR |
 | Liseuse PDF.js à la demande, `?page=N`, zoom, clavier, filigrane exact, alternative texte | T | E2E liseuse |
 | Lecture hors ligne volontaire d'un livre, effacement | I | Bouton « Garder hors ligne » (Cache Storage, contrôle d'espace) ; non testé sur appareil |

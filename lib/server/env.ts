@@ -25,6 +25,8 @@ const schema = z.object({
   LLM_CROSS_PROVIDER_FALLBACK: z.enum(["true", "false"]).default("false").transform((v) => v === "true"),
   LLM_TIMEOUT_MS: z.coerce.number().int().min(5000).max(120000).default(45000),
   LLM_GLOBAL_RPM: z.coerce.number().int().min(1).max(10000).default(30),
+  GOOGLE_SERVICE_ACCOUNT_JSON: z.string().optional(),
+  DRIVE_FOLDER_ID: z.string().regex(/^[A-Za-z0-9_-]{10,}$/).default("1eVNAgUtMHp8Op2qvXdseVWWVFIt0ggxI"),
   EMBEDDING_PROVIDER: z.enum(["gemini", "openai", "none"]).default("none"),
   EMBEDDING_MODEL: z.string().optional(),
   EMBEDDING_DIMENSIONS: z.coerce.number().int().min(8).max(4096).default(768),

@@ -113,7 +113,7 @@ export function getPageText(editionId: string, page: number): string | null {
 export function listDriveSources() {
   return db().prepare(
     `SELECT d.file_id AS fileId, d.work_id AS workId, d.name, d.size_bytes AS sizeBytes, d.modified_time AS modifiedTime,
-            (SELECT COUNT(*) FROM editions e WHERE e.drive_file_id = d.file_id) AS editionCount
+            (SELECT COUNT(*) FROM editions e WHERE e.drive_file_id = d.file_id) AS editionCount, d.last_status AS lastStatus
      FROM drive_sources d ORDER BY d.work_id`,
-  ).all() as { fileId: string; workId: string; name: string; sizeBytes: number; modifiedTime: string; editionCount: number }[];
+  ).all() as { fileId: string; workId: string; name: string; sizeBytes: number; modifiedTime: string; editionCount: number; lastStatus: string | null }[];
 }

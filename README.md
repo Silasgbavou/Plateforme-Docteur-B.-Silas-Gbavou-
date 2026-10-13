@@ -34,6 +34,7 @@ ils vivent dans `DATABASE_PATH` et `STORAGE_DIR`, hors de `/public`.
 | `pnpm models:check` | Liste les modèles réellement accessibles avec les clés configurées |
 | `pnpm backup` / `pnpm restore:check <dossier>` | Sauvegarde cohérente + vérification de restauration |
 | `pnpm edition:import <œuvre> <pdf>` | Import d'une édition brouillon (SHA-256) |
+| `pnpm drive:sync` | Synchronise le dossier Drive autorisé (brouillons uniquement) |
 
 ## Documentation
 

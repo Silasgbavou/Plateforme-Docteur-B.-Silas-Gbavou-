@@ -3,12 +3,16 @@ import { hostname } from "node:os";
 import { claimNext, complete, failOrRetry, LeaseLostError, type Job } from "./jobs";
 import { runExtractJob } from "./editions";
 import { runEmbedJob } from "./embed-job";
+import { syncDrive } from "./drive";
 
 type Handler = (job: Job, owner: string, signal: AbortSignal) => Promise<void>;
 
 export const HANDLERS: Record<string, Handler> = {
   "edition.extract": (job, owner) => runExtractJob(job, owner),
   "passages.embed": runEmbedJob,
+  "drive.sync": async (job, owner) => {
+    await syncDrive(job, owner);
+  },
 };
 
 export const workerId = () => `${hostname()}:${process.pid}`;
