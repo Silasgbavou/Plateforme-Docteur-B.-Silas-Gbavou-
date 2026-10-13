@@ -24,7 +24,10 @@
     "admin:hash": "tsx --conditions=react-server scripts/admin-hash.ts",
     "models:check": "tsx --conditions=react-server scripts/models-check.ts",
     "edition:import": "tsx --conditions=react-server scripts/import-edition.ts",
-    "icons": "tsx --conditions=react-server scripts/generate-icons.ts"
+    "icons": "tsx --conditions=react-server scripts/generate-icons.ts",
+    "backup": "tsx scripts/backup.ts",
+    "restore:check": "tsx scripts/restore-check.ts",
+    "check": "pnpm typecheck && pnpm lint && pnpm test"
   },
   "dependencies": {
     "@fontsource/cormorant-garamond": "5.3.0",

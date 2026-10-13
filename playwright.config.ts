@@ -34,7 +34,7 @@ export default defineConfig({
   use: {
     baseURL: "http://localhost:3100",
     trace: "retain-on-failure",
-    launchOptions: { executablePath: process.env.PW_CHROMIUM ?? "/opt/pw-browsers/chromium" },
+    launchOptions: process.env.PW_CHROMIUM === "" ? {} : { executablePath: process.env.PW_CHROMIUM ?? "/opt/pw-browsers/chromium" },
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: [
