@@ -8,6 +8,19 @@ Application installable (PWA) depuis les navigateurs compatibles.
 > Voir [docs/RAPPORT-TESTS.md](docs/RAPPORT-TESTS.md) et les décisions à confirmer dans
 > [docs/DECISIONS-A-CONFIRMER.md](docs/DECISIONS-A-CONFIRMER.md).
 
+## Mettre le site en ligne (sans compétence technique)
+
+1. Sur la pull request, cliquer sur **Merge pull request** (le code part sur `main`).
+2. Ouvrir https://render.com/deploy?repo=https://github.com/Silasgbavou/Plateforme-Docteur-B.-Silas-Gbavou-
+   et se connecter avec GitHub.
+3. Remplir deux champs : `ADMIN_EMAIL` (votre email) et `ADMIN_PASSWORD` (un mot de passe d'au moins
+   12 caractères), puis valider. Render demande un moyen de paiement (offre « Starter » + disque de 5 Go).
+4. Après quelques minutes, l'adresse du site s'affiche (`https://….onrender.com`). Le bureau est sur
+   `/gestion` ; y téléverser les PDF des livres (Catalogue & éditions) puis les publier.
+
+L'intelligence artificielle du moteur d'étude s'active plus tard en ajoutant `GEMINI_API_KEY` et
+`GEMINI_MODELS` dans l'onglet Environment de Render (nouvelle clé uniquement).
+
 ## Démarrage local
 
 ```bash

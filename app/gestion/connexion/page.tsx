@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { env } from "@/lib/server/env";
-import { verifyPassword } from "@/lib/server/password";
+import { verifyAdminPassword } from "@/lib/server/admin";
 import { currentAdmin, openAdminSession } from "@/lib/server/session";
 import { rateLimit } from "@/lib/server/security";
 import { ApiError } from "@/lib/server/http";
@@ -24,7 +24,7 @@ async function login(formData: FormData) {
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
   const expected = env().ADMIN_EMAIL?.trim().toLowerCase();
-  const valid = Boolean(expected) && email === expected && verifyPassword(password, env().ADMIN_PASSWORD_HASH);
+  const valid = Boolean(expected) && email === expected && verifyAdminPassword(password);
   if (!valid) {
     audit(email || "inconnu", "admin.connexion.echec");
     redirect("/gestion/connexion?erreur=identifiants");

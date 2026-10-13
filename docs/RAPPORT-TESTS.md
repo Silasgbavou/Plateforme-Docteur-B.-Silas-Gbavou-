@@ -10,7 +10,7 @@ Fournisseur IA **simulé** (aucun appel réel à Google ou OpenAI). Données de 
 |---|---|---|
 | Types | `pnpm typecheck` | 0 erreur |
 | Lint | `pnpm lint` | 0 erreur, 0 avertissement |
-| Unitaires + intégration (8 fichiers) | `pnpm test` | **68 / 68** |
+| Unitaires + intégration (9 fichiers) | `pnpm test` | **70 / 70** |
 | E2E Playwright | `pnpm test:e2e` | **32 / 32** |
 | Build production | `pnpm build` | réussi, 41 routes |
 | Sauvegarde/restauration | `pnpm backup` + `pnpm restore:check` | sain : OK ; fichier altéré : détecté (code 1) |

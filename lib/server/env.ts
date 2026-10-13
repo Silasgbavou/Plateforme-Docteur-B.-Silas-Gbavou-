@@ -15,7 +15,9 @@ const schema = z.object({
   SESSION_SECRET: z.string().optional(),
   ADMIN_EMAIL: z.string().optional(),
   ADMIN_PASSWORD_HASH: z.string().optional(),
-  LLM_PROVIDER: z.enum(["gemini", "openai", "none"]).default("none"),
+  /** Alternative simple pour un hébergeur à secrets chiffrés : mot de passe en clair dans le coffre (12 caractères min.). */
+  ADMIN_PASSWORD: z.string().min(12).optional().or(z.literal("").transform(() => undefined)),
+  LLM_PROVIDER: z.enum(["gemini", "openai", "none"]).optional(),
   GEMINI_API_KEY: z.string().optional(),
   GEMINI_MODELS: csv,
   GEMINI_API_BASE: z.string().url().default("https://generativelanguage.googleapis.com/v1beta"),
@@ -32,19 +34,26 @@ const schema = z.object({
   EMBEDDING_DIMENSIONS: z.coerce.number().int().min(8).max(4096).default(768),
 });
 
-export type Env = z.infer<typeof schema>;
+export type Env = Omit<z.infer<typeof schema>, "LLM_PROVIDER"> & { LLM_PROVIDER: "gemini" | "openai" | "none" };
 
 let cached: Env | null = null;
 
 export function env(): Env {
   if (cached) return cached;
-  const parsed = schema.safeParse(process.env);
+  const parsed = schema.safeParse({
+    ...process.env,
+    SITE_URL: process.env.SITE_URL || process.env.RENDER_EXTERNAL_URL || undefined,
+  });
   if (!parsed.success) {
     // Ne jamais afficher les valeurs : seulement les noms de variables fautives.
     const names = parsed.error.issues.map((i) => i.path.join(".")).join(", ");
     throw new Error(`Configuration invalide : ${names}`);
   }
-  cached = parsed.data;
+  const data = parsed.data;
+  cached = {
+    ...data,
+    LLM_PROVIDER: data.LLM_PROVIDER ?? (data.GEMINI_API_KEY && data.GEMINI_MODELS.length ? "gemini" : "none"),
+  } as Env;
   return cached;
 }
 
