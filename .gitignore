@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+next-env.d.ts
+# Données locales : base SQLite, fichiers d'éditions (PDF), exports — jamais commités (dépôt public)
+data/
+storage/
+backups/
+.env
+.env.*
+!.env.example
+public/pdf.worker.min.mjs
