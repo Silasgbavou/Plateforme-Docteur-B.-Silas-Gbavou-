@@ -1,4 +1,5 @@
 import "server-only";
+import path from "node:path";
 
 export interface ExtractedPage {
   pageNumber: number;
@@ -16,6 +17,8 @@ export async function extractPdfPages(data: Uint8Array, onPage?: (n: number, tot
     data: new Uint8Array(data),
     disableFontFace: true,
     useSystemFonts: false,
+    // Polices standard PDF (Helvetica…) fournies par pdfjs-dist : nécessaires à certaines extractions.
+    standardFontDataUrl: `${path.join(process.cwd(), "node_modules", "pdfjs-dist", "standard_fonts")}${path.sep}`,
   });
   const doc = await task.promise;
   const pages: ExtractedPage[] = [];

@@ -42,7 +42,7 @@ export function BookCover({ workId, title, pillar, coverKey, coverWidth, coverHe
         <span className="book__pillar">{p ? p.number : ""}</span>
         <span className="book__title">{title}</span>
         <span className="book__rule" />
-        <span className="book__author">Dr B. Silas Gbavou</span>
+        <span className="book__author">B. Silas Gbavou</span>
       </span>
     </div>
   );

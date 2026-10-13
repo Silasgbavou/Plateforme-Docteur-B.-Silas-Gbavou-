@@ -5,7 +5,7 @@
  * - Les livres ne sont gardés hors ligne que par action volontaire du lecteur (cache « ms-livres »),
  *   géré par la liseuse elle-même, jamais préchargés ici.
  */
-const VERSION = "v1-2026-10-13";
+const VERSION = "v2-2026-10-13";
 const STATIC_CACHE = `ms-static-${VERSION}`;
 const PAGES_CACHE = `ms-pages-${VERSION}`;
 const BOOKS_CACHE = "ms-livres-v1";
@@ -32,6 +32,13 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("message", (event) => {
   if (event.data?.type === "SKIP_WAITING") self.skipWaiting();
 });
+
+// Pages publiques : Next.js les sert en « no-store » car rendues dynamiquement ; elles ne contiennent
+// aucune donnée personnelle (les données privées sont chargées par /api, jamais mis en cache).
+// La liste blanche PUBLIC_PAGES est la garantie ; on ne garde que des réponses HTML réussies.
+function cacheablePage(res) {
+  return res && res.ok && res.type === "basic" && (res.headers.get("content-type") || "").includes("text/html");
+}
 
 function cacheable(res) {
   return res && res.ok && res.type === "basic" && !res.headers.has("set-cookie") && !/no-store|private/.test(res.headers.get("cache-control") || "");
@@ -63,7 +70,7 @@ self.addEventListener("fetch", (event) => {
       (async () => {
         try {
           const res = await fetch(req);
-          if (isPublic && cacheable(res)) (await caches.open(PAGES_CACHE)).put(url.pathname, res.clone());
+          if (isPublic && cacheablePage(res)) (await caches.open(PAGES_CACHE)).put(url.pathname, res.clone());
           return res;
         } catch {
           if (isPublic) {

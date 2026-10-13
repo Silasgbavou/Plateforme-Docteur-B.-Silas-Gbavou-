@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * Enregistre le service worker et annonce une nouvelle version SANS recharger d'office :
@@ -9,12 +9,15 @@ export function PwaRegistrar() {
   const [waiting, setWaiting] = useState<ServiceWorker | null>(null);
   const [installEvent, setInstallEvent] = useState<(Event & { prompt: () => Promise<void> }) | null>(null);
   const [dismissed, setDismissed] = useState(false);
+  // Rechargement UNIQUEMENT après demande explicite : la première installation du service worker
+  // (clients.claim) déclenche aussi « controllerchange » et ne doit jamais recharger la page.
+  const updateRequested = useRef(false);
 
   useEffect(() => {
     if (!("serviceWorker" in navigator) || process.env.NODE_ENV !== "production") return;
     let refreshing = false;
     navigator.serviceWorker.addEventListener("controllerchange", () => {
-      if (refreshing) return;
+      if (refreshing || !updateRequested.current) return;
       refreshing = true;
       window.location.reload();
     });
@@ -41,7 +44,10 @@ export function PwaRegistrar() {
         <p>Une nouvelle version du site est disponible.</p>
         <div className="toast__actions">
           <button type="button" className="btn btn--line btn--small" onClick={() => setWaiting(null)}>Plus tard</button>
-          <button type="button" className="btn btn--solid btn--small" onClick={() => waiting.postMessage({ type: "SKIP_WAITING" })}>
+          <button type="button" className="btn btn--solid btn--small" onClick={() => {
+              updateRequested.current = true;
+              waiting.postMessage({ type: "SKIP_WAITING" });
+            }}>
             Mettre à jour
           </button>
         </div>

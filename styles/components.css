@@ -135,7 +135,7 @@
 }
 
 /* Arche doctorale */
-.arch { margin: 0; }
+.arch { margin: 0; width: 100%; max-width: 24rem; justify-self: center; }
 .arch__frame {
   position: relative; aspect-ratio: 3 / 4; border-radius: var(--radius-arch); overflow: hidden;
   border: 1px solid rgb(212 175 55 / 0.7);
@@ -185,18 +185,21 @@
 .book { position: relative; aspect-ratio: 2 / 3; border-radius: 2px 6px 6px 2px; box-shadow: var(--shadow-book); background: var(--night-900); transform-origin: left center; transition: transform var(--dur-editorial) var(--ease-editorial), box-shadow var(--dur-editorial) var(--ease-editorial); }
 .book__image { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
 .book__spine { position: absolute; z-index: 1; left: 0; top: 0; bottom: 0; width: 7%; background: linear-gradient(90deg, rgb(0 0 0 / 0.28), rgb(255 255 255 / 0.12) 55%, rgb(0 0 0 / 0.12)); border-radius: 2px 0 0 2px; pointer-events: none; }
-.book--typeset { background: radial-gradient(120% 80% at 70% 10%, var(--night-700), var(--night-900) 70%); color: var(--alabaster); }
-.book__frame { position: absolute; inset: 8% 9% 8% 14%; display: flex; flex-direction: column; border: 1px solid rgb(212 175 55 / 0.65); padding: 10% 9%; }
-.book__pillar { font-family: var(--font-display); font-size: 0.85rem; color: var(--gold-500); }
-.book__title { font-family: var(--font-display); font-size: clamp(0.95rem, 0.6rem + 1vw, 1.3rem); line-height: 1.15; margin-top: auto; text-wrap: balance; overflow-wrap: anywhere; }
-.book__rule { width: 2.2rem; height: 1px; background: var(--gold-500); margin: 0.7rem 0 0.5rem; }
-.book__author { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgb(250 249 246 / 0.75); }
+.book--typeset { background-color: var(--night-900); background-image: radial-gradient(120% 80% at 70% 10%, var(--night-700), var(--night-900) 70%); color: var(--alabaster); }
+.book--typeset { container-type: inline-size; }
+.book__frame { position: absolute; inset: 7% 8% 7% 13%; display: flex; flex-direction: column; border: 1px solid rgb(212 175 55 / 0.65); padding: 9% 8%; overflow: hidden; }
+.book__pillar { font-family: var(--font-display); font-size: max(0.6rem, 7cqi); color: var(--gold-500); line-height: 1; }
+.book__title { font-family: var(--font-display); font-size: clamp(0.72rem, 10.5cqi, 1.45rem); line-height: 1.12; margin-top: auto; text-wrap: balance; overflow-wrap: break-word; hyphens: auto; }
+.book__rule { flex: none; width: 22%; height: 1px; background: var(--gold-500); margin: 7cqi 0 5cqi; }
+.book__author { font-size: max(0.5rem, 5cqi); letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber-300); white-space: nowrap; overflow: hidden; text-overflow: clip; line-height: 1.3; }
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .shelf__link:hover .book, .library-card:hover .book { transform: perspective(900px) rotateY(-9deg) translateY(-2px); box-shadow: 1px 1px 0 rgb(11 37 69 / 0.25), 10px 12px 18px -6px rgb(11 37 69 / 0.28), 24px 30px 40px -18px rgb(11 37 69 / 0.38); }
 }
 
 /* Rayonnage (accueil, piliers) */
-.shelf__row { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(10.5rem, 42vw), 1fr)); gap: var(--space-7) var(--space-5); }
+.shelf__row { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-7) var(--space-5); }
+@media (min-width: 40rem) { .shelf__row { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 80rem) { .shelf__row { grid-template-columns: repeat(8, 1fr); gap: var(--space-7) var(--space-4); } }
 .shelf__link { display: grid; gap: var(--space-3); text-decoration: none; color: var(--color-text); }
 .shelf__title { font-family: var(--font-display); font-size: var(--step-1); line-height: 1.2; color: var(--color-heading); }
 .shelf__link:hover .shelf__title { text-decoration: underline; text-decoration-color: var(--color-accent-line); }
