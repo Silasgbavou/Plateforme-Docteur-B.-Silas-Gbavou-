@@ -1,0 +1,95 @@
+/* ==========================================================================
+   Base : reset mesuré, typographie, focus, utilitaires de mise en page
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + var(--space-4));
+  color-scheme: light;
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-text);
+  font-size: var(--step-0);
+  line-height: var(--leading-text);
+  font-feature-settings: "kern" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+img, svg, video, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a, button, input, select, textarea, label, summary { touch-action: manipulation; -webkit-tap-highlight-color: rgb(11 37 69 / 0.08); }
+[id] { scroll-margin-top: calc(var(--header-h) + var(--space-4)); }
+a { color: var(--color-link); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+a:hover { text-decoration-color: var(--color-accent-line); }
+p { margin: 0 0 var(--space-4); }
+ul, ol { margin: 0; padding: 0; }
+
+h1, h2, h3, h4, .display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--color-heading);
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-display);
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  font-synthesis: none;
+  margin: 0;
+  text-wrap: balance;
+}
+h1 { font-size: var(--step-4); }
+h2 { font-size: var(--step-3); }
+h3 { font-size: var(--step-2); }
+h4 { font-size: var(--step-1); }
+em, i, .italic { font-style: italic; }
+.oldstyle { font-variant-numeric: oldstyle-nums; }
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-hairline);
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: -100px;
+  z-index: var(--z-toast);
+  background: var(--color-brand);
+  color: var(--white);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-control);
+}
+.skip-link:focus { top: var(--space-3); }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Conteneurs */
+.container { width: min(100% - 2 * var(--gutter), var(--container-standard)); margin-inline: auto; }
+.container--wide { width: min(100% - 2 * var(--gutter), var(--container-wide)); }
+.container--reading { width: min(100% - 2 * var(--gutter), var(--container-reading)); }
+.section { padding-block: var(--section); }
+.section--tight { padding-block: calc(var(--section) * 0.6); }
+.prose { max-width: var(--measure); }
+.prose p { margin-bottom: var(--space-4); }
+
+/* Surtitre éditorial : petites capitales espacées précédées d'un filet or */
+/* Repère discret (bureau) : italique, casse normale — jamais de capitales espacées. */
+.kicker { display: block; font-family: var(--font-display); font-style: italic; font-size: var(--step-1); color: var(--color-accent-text); margin-bottom: var(--space-3); }
+
+.lead { font-size: var(--step-1); color: var(--color-text-muted); line-height: 1.6; max-width: 56ch; }
+.muted { color: var(--color-text-muted); }
+.subtle { color: var(--color-text-subtle); font-size: var(--step--1); }
+
+.rule { border: 0; height: 1px; background: var(--color-border); margin: var(--space-6) 0; }
+.rule--gold { background: linear-gradient(90deg, var(--color-accent-line), rgb(212 175 55 / 0)); }
