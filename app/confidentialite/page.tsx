@@ -11,7 +11,6 @@ export default function PrivacyPage() {
     <article className="section">
       <div className="container container--reading prose-page">
         <header className="page-head">
-          <p className="kicker">Confidentialité et droits</p>
           <h1>Ce que le site enregistre, et pourquoi</h1>
           <p className="subtle">Version du 13 octobre 2026. Cette page décrit le fonctionnement réel du site ; elle ne constitue pas un avis juridique.</p>
         </header>

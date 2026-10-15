@@ -58,7 +58,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
             ) : null}
             <div className="field">
               <label htmlFor="email">Adresse email</label>
-              <input id="email" name="email" type="email" autoComplete="username" required />
+              <input id="email" name="email" type="email" autoComplete="username" spellCheck={false} required />
             </div>
             <div className="field">
               <label htmlFor="password">Mot de passe</label>

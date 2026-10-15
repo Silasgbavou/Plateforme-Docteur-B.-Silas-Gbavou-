@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BookCover } from "@/components/library/BookCover";
 import { DownloadForm } from "@/components/library/DownloadForm";
-import { ArrowIcon, BookIcon } from "@/components/ui/icons";
+import { BookIcon } from "@/components/ui/icons";
 import { getPillar } from "@/lib/domain/pillars";
 import { getWork } from "@/lib/server/catalog";
 import { WATERMARK } from "@/lib/domain/contacts";
@@ -72,7 +72,7 @@ export default async function WorkPage({ params }: { params: Params }) {
               </Link>
             ) : null}
             <Link className="btn btn--line" href={`/etude?ouvrage=${work.id}`}>
-              Étudier cet ouvrage <ArrowIcon size={18} />
+              Étudier cet ouvrage
             </Link>
           </div>
 

@@ -2,19 +2,19 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 
 /**
- * Arche doctorale. Le portrait officiel est intégré s'il est présent dans /public/portraits
- * (fichier fourni par le ministère, jamais généré). En son absence, l'arche porte le voile
- * soyeux et le monogramme, sans visage de substitution.
+ * Fenêtre de la nef : l'arche doctorale traitée comme une baie éclairée (meneau et imposte dorés),
+ * traversée par la lumière céleste et ambrée des voiles. Le portrait officiel y prend place
+ * s'il est fourni dans /public/portraits (jamais de visage généré).
  */
 export function HeroArch() {
   const hasPortrait = existsSync(path.join(process.cwd(), "public", "portraits", "hero.webp"));
   return (
-    <figure className="arch" data-portrait={hasPortrait}>
-      <div className="arch__frame">
-        <div className="arch__veil" aria-hidden="true" />
+    <figure className="window" data-portrait={hasPortrait}>
+      <div className="window__bay">
+        <div className="window__light" aria-hidden="true" />
         {hasPortrait ? (
           <img
-            className="arch__portrait"
+            className="window__portrait"
             src="/portraits/hero.webp"
             alt="Portrait officiel du Docteur B. Silas Gbavou"
             width={720}
@@ -23,16 +23,16 @@ export function HeroArch() {
             decoding="async"
           />
         ) : (
-          <span className="arch__monogram" aria-hidden="true">
-            <span>B</span>
-            <span className="arch__monogram-dot">·</span>
-            <span>S</span>
-            <span className="arch__monogram-dot">·</span>
-            <span>G</span>
-          </span>
+          <svg className="window__tracery" viewBox="0 0 300 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <path d="M150 0 V420" />
+            <path d="M0 150 H300" />
+            <path d="M32 150 A118 118 0 0 1 268 150" />
+          </svg>
         )}
       </div>
-      {!hasPortrait ? <figcaption className="visually-hidden">Arche décorative ; portrait officiel non intégré.</figcaption> : null}
+      <figcaption className="visually-hidden">
+        {hasPortrait ? "Portrait du Docteur B. Silas Gbavou dans l'arche du ministère." : "Arche lumineuse, emblème du ministère."}
+      </figcaption>
     </figure>
   );
 }

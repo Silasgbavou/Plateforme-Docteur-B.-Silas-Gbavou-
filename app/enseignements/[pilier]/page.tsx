@@ -7,7 +7,7 @@ import { listVideos } from "@/lib/server/videos";
 import { listArticles } from "@/lib/server/articles";
 import { listAudios } from "@/lib/server/audios";
 import { BookCover } from "@/components/library/BookCover";
-import { ArrowIcon, PlayIcon } from "@/components/ui/icons";
+import { PlayIcon } from "@/components/ui/icons";
 
 type Params = Promise<{ pilier: string }>;
 
@@ -30,10 +30,10 @@ export default async function PillarPage({ params }: { params: Params }) {
     <div className="section">
       <div className="container container--wide">
         <header className="page-head">
-          <p className="kicker"><span className="oldstyle">{pillar.number}</span>&nbsp;Pilier</p>
+          <p className="pillar-number oldstyle" aria-hidden="true">{pillar.number}</p>
           <h1>{pillar.label}</h1>
-          {themes.length ? <p className="lead">Thèmes : {themes.join(" · ")}</p> : null}
-          <p><Link className="link-arrow" href={`/etude`}>Étudier ce pilier dans le moteur d&apos;étude <ArrowIcon size={16} /></Link></p>
+          {themes.length ? <p className="lead">Thèmes : {themes.join(", ")}.</p> : null}
+          <p><Link className="link-arrow" href={`/etude`}>Étudier ce pilier dans le moteur d&apos;étude</Link></p>
         </header>
 
         {empty ? <div className="empty"><p className="empty__title">Aucun contenu publié pour ce pilier pour le moment.</p></div> : null}
@@ -60,7 +60,7 @@ export default async function PillarPage({ params }: { params: Params }) {
             <h2 id="h-videos" className="pillar-block__title">Prédications</h2>
             <ul className="media-list">
               {videos.map((v) => (
-                <li key={v.id}><Link href={`/videos/${v.id}`}><PlayIcon size={18} /> {v.title}</Link>{v.theme ? <span className="subtle"> · {v.theme}</span> : null}</li>
+                <li key={v.id}><Link href={`/videos/${v.id}`}><PlayIcon size={18} /> {v.title}</Link>{v.theme ? <span className="subtle">, {v.theme}</span> : null}</li>
               ))}
             </ul>
           </section>
@@ -70,7 +70,7 @@ export default async function PillarPage({ params }: { params: Params }) {
           <section className="pillar-block" aria-labelledby="h-ecrits">
             <h2 id="h-ecrits" className="pillar-block__title">Écrits</h2>
             <ul className="media-list">
-              {articles.map((a) => <li key={a.id}><Link href={`/ecrits/${a.slug}`}>{a.title}</Link>{a.theme ? <span className="subtle"> · {a.theme}</span> : null}</li>)}
+              {articles.map((a) => <li key={a.id}><Link href={`/ecrits/${a.slug}`}>{a.title}</Link>{a.theme ? <span className="subtle">, {a.theme}</span> : null}</li>)}
             </ul>
           </section>
         ) : null}
@@ -81,7 +81,7 @@ export default async function PillarPage({ params }: { params: Params }) {
             <ul className="media-list media-list--audio">
               {audios.map((a) => (
                 <li key={a.id}>
-                  <p>{a.title}{a.theme ? <span className="subtle"> · {a.theme}</span> : null}</p>
+                  <p>{a.title}{a.theme ? <span className="subtle">, {a.theme}</span> : null}</p>
                   <audio controls preload="none" src={`/api/audios/${a.id}`} />
                   {a.transcript ? <details><summary>Transcription</summary><p className="pre">{a.transcript}</p></details> : null}
                 </li>

@@ -19,7 +19,7 @@ export default async function ArticlePage({ params }: { params: Params }) {
       <div className="container container--reading">
         <nav className="breadcrumb" aria-label="Fil d'Ariane"><Link href="/ecrits">Écrits</Link></nav>
         <h1>{a.title}</h1>
-        <p className="subtle">{getPillar(a.pillar)?.label}{a.theme ? ` · ${a.theme}` : ""}{a.publishedAt ? ` · ${new Date(a.publishedAt).toLocaleDateString("fr-FR")}` : ""}</p>
+        <p className="subtle">{getPillar(a.pillar)?.label}{a.theme ? `, ${a.theme}` : ""}{a.publishedAt ? `, publié le ${new Date(a.publishedAt).toLocaleDateString("fr-FR")}` : ""}</p>
         <div className="prose article-body">{a.body.split(/\n{2,}/).map((p, i) => <p key={i}>{p}</p>)}</div>
       </div>
     </article>

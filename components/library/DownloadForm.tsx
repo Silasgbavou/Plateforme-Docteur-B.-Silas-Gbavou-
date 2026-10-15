@@ -3,7 +3,6 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { DISCOVERY_OPTIONS, downloadRequestSchema } from "@/lib/domain/download-schema";
 import { apiFetch } from "@/lib/client/api";
-import { ArrowIcon } from "@/components/ui/icons";
 
 type Values = {
   lastName: string; firstName: string; church: string; whatsapp: string; email: string; motivation: string; discovery: string;
@@ -104,7 +103,7 @@ export function DownloadForm({ workId, title }: { workId: string; title: string 
             Télécharger le PDF
           </a>
           <Link className="btn btn--line" href={`/lecture/${workId}?page=1`}>
-            Lire en ligne <ArrowIcon size={18} />
+            Lire en ligne
           </Link>
         </div>
       </div>
@@ -145,7 +144,7 @@ export function DownloadForm({ workId, title }: { workId: string; title: string 
       {field("church", <input type="text" autoComplete="organization" maxLength={140} {...aria("church")} />)}
       <div className="form__row">
         {field("whatsapp", <input type="tel" inputMode="tel" autoComplete="tel" placeholder="+229 …" {...aria("whatsapp", true)} />, "Avec l'indicatif du pays.")}
-        {field("email", <input type="email" inputMode="email" autoComplete="email" maxLength={160} {...aria("email")} />)}
+        {field("email", <input type="email" inputMode="email" autoComplete="email" spellCheck={false} maxLength={160} {...aria("email")} />)}
       </div>
       {field("motivation", <textarea rows={4} maxLength={1500} {...aria("motivation", true)} />, "Ce qui vous conduit vers cet ouvrage, en quelques mots.")}
       {field(

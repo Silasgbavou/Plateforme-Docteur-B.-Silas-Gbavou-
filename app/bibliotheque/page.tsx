@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookCover } from "@/components/library/BookCover";
-import { ArrowIcon } from "@/components/ui/icons";
 import { PILLARS, getPillar } from "@/lib/domain/pillars";
 import { listPublishedWorks } from "@/lib/server/catalog";
 
@@ -29,7 +28,6 @@ export default async function LibraryPage({ searchParams }: { searchParams: SP }
     <div className="section">
       <div className="container container--wide">
         <header className="page-head">
-          <p className="kicker">Bibliothèque</p>
           <h1>Les ouvrages du Docteur B. Silas Gbavou</h1>
           <p className="lead">Chaque ouvrage se lit sur le site, page par page, et peut être reçu au format numérique après une courte demande.</p>
         </header>
@@ -60,7 +58,7 @@ export default async function LibraryPage({ searchParams }: { searchParams: SP }
         <p className="subtle" role="status" aria-live="polite">
           {works.length === 0 ? "Aucun ouvrage" : works.length === 1 ? "1 ouvrage" : `${works.length} ouvrages`}
           {pillar ? ` — ${pillar.label}` : ""}
-          {theme ? ` · ${theme}` : ""}
+          {theme ? `, thème ${theme}` : ""}
         </p>
 
         {works.length === 0 ? (
@@ -79,13 +77,14 @@ export default async function LibraryPage({ searchParams }: { searchParams: SP }
                     <BookCover workId={w.id} title={w.title} pillar={w.pillar} coverKey={w.coverKey} coverWidth={w.coverWidth} coverHeight={w.coverHeight} priority={i < 3} />
                   </Link>
                   <div className="library-card__body">
-                    <p className="library-card__pillar">{p?.label}{w.theme ? ` · ${w.theme}` : ""}</p>
+                    <p className="library-card__pillar">{p?.label}</p>
                     <h2 className="library-card__title">{w.title}</h2>
+                    {w.theme ? <p className="library-card__theme">{w.theme}</p> : null}
                     <p className="subtle">
-                      {w.edition ? `${w.edition.pageCount} pages · ${w.edition.label}` : "Fichier en cours de préparation"}
+                      {w.edition ? `${w.edition.pageCount}\u00a0pages, ${w.edition.label}` : "Fichier en cours de préparation"}
                     </p>
                     <Link href={`/ouvrages/${w.id}`} className="btn btn--line btn--small">
-                      Découvrir l&apos;ouvrage <ArrowIcon size={16} />
+                      Découvrir l&apos;ouvrage
                       <span className="visually-hidden"> « {w.title} »</span>
                     </Link>
                   </div>

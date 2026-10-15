@@ -6,7 +6,7 @@ import { CONTACTS } from "@/lib/domain/contacts";
 import { apiFetch } from "@/lib/client/api";
 import { AnswerText } from "./AnswerText";
 import { readSse } from "./sse";
-import { ArrowIcon, MailIcon, WhatsAppIcon } from "@/components/ui/icons";
+import { MailIcon, WhatsAppIcon } from "@/components/ui/icons";
 
 interface Props {
   title: string;
@@ -183,7 +183,6 @@ export function StudyApp({ title, works, initialWorkId, initialQuestion, initial
     <div className="study__layout">
       <header className="study__head container container--wide">
         <div className="study__titles">
-          <p className="kicker">Étude</p>
           <h1 className="study__title">{title}</h1>
         </div>
         <div className="study__controls">
@@ -236,7 +235,7 @@ export function StudyApp({ title, works, initialWorkId, initialQuestion, initial
                 <li key={t.threadId}>
                   <button type="button" className="history-list__item" onClick={() => openThread(t.threadId)} aria-current={t.threadId === threadId ? "true" : undefined}>
                     <span>{t.firstQuestion}</span>
-                    <span className="subtle">{new Date(t.lastAt).toLocaleDateString("fr-FR")} · {t.count} question{t.count > 1 ? "s" : ""}</span>
+                    <span className="subtle">{new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" }).format(new Date(t.lastAt))}, {t.count} question{t.count > 1 ? "s" : ""}</span>
                   </button>
                 </li>
               ))}
@@ -381,7 +380,7 @@ function Exchange({ x, onFollowUp, busy }: { x: LiveExchange; onFollowUp: (q: st
                 {a.relances.map((r) => (
                   <li key={r.question}>
                     <button type="button" className="followup" disabled={busy} onClick={() => onFollowUp(r.question)}>
-                      {r.question} <ArrowIcon size={16} />
+                      {r.question}
                     </button>
                   </li>
                 ))}

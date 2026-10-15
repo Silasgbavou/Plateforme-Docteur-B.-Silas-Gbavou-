@@ -9,7 +9,6 @@ export default function DiscussionPage() {
     <div className="section">
       <div className="container container--reading">
         <header className="page-head">
-          <p className="kicker">Consultation privée</p>
           <h1>Écrire au ministère</h1>
           <p className="lead">
             Cet échange est distinct du moteur d&apos;étude : il est lu par le ministère, qui vous répond ici lorsqu&apos;il le peut.

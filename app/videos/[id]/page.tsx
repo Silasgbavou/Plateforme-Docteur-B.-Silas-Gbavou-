@@ -26,7 +26,7 @@ export default async function VideoPage({ params, searchParams }: { params: Para
       <div className="container container--standard">
         <nav className="breadcrumb" aria-label="Fil d'Ariane"><Link href="/videos">Prédications</Link></nav>
         <h1 className="video-page__title">{v.title}</h1>
-        <p className="subtle">{getPillar(v.pillar ?? "")?.label}{v.theme ? ` · ${v.theme}` : ""}</p>
+        <p className="subtle">{getPillar(v.pillar ?? "")?.label}{v.theme ? `, ${v.theme}` : ""}</p>
         {v.teachingStartSec != null ? (
           <p><a className="badge" href={`/videos/${id}?t=${v.teachingStartSec}`}>Début de l&apos;enseignement à {formatTimecode(v.teachingStartSec)}</a></p>
         ) : null}

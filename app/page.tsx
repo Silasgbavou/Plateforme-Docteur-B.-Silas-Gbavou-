@@ -2,7 +2,6 @@ import Link from "next/link";
 import { HeroArch } from "@/components/home/HeroArch";
 import { BookCover } from "@/components/library/BookCover";
 import { ContactList } from "@/components/site/ContactList";
-import { ArrowIcon } from "@/components/ui/icons";
 import { AUTHOR_QUALITIES, STUDY_TITLE } from "@/lib/domain/contacts";
 import { PILLARS } from "@/lib/domain/pillars";
 import { listPublishedWorks } from "@/lib/server/catalog";
@@ -10,6 +9,8 @@ import { todaysSelections } from "@/lib/server/daily";
 
 export default function HomePage() {
   const works = listPublishedWorks();
+  const q = [...AUTHOR_QUALITIES];
+  const qualitiesSentence = `${q.slice(0, -1).join(", ")} et ${q[q.length - 1]}.`.replace(/^./, (c) => c.toUpperCase());
   const daily = todaysSelections();
   const themesByPillar = new Map<string, Set<string>>();
   for (const w of works) {
@@ -21,40 +22,34 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="opening" aria-labelledby="titre-accueil">
-        <div className="opening__veil" aria-hidden="true" />
-        <div className="container container--wide opening__grid">
-          <HeroArch />
-          <div className="opening__text">
-            <p className="kicker">Ministère d&apos;Enseignement</p>
-            <h1 id="titre-accueil" className="opening__title">
-              Docteur <span className="italic">B.</span> Silas Gbavou
+      <section className="nave" aria-labelledby="titre-accueil">
+        <div className="container container--wide nave__grid">
+          <div className="nave__text">
+            <h1 id="titre-accueil" className="nave__title" translate="no">
+              Docteur B. Silas Gbavou
             </h1>
-            <ul className="qualities" aria-label="Ministère">
-              {AUTHOR_QUALITIES.map((q) => (
-                <li key={q}>{q}</li>
-              ))}
-            </ul>
-            <p className="lead">
-              Les livres, enseignements et prédications du ministère, réunis en un même lieu — à lire, à étudier
-              et à approfondir, source à l&apos;appui.
+            <p className="nave__qualities">{qualitiesSentence}</p>
+            <p className="nave__lead">
+              Les livres, enseignements et prédications du Ministère d&apos;Enseignement, réunis en un même lieu pour être lus,
+              étudiés et approfondis, source à l&apos;appui.
             </p>
-            <div className="actions">
-              <Link className="btn btn--solid" href="/bibliotheque">
+            <div className="nave__actions">
+              <Link className="btn btn--light" href="/bibliotheque">
                 Ouvrir la bibliothèque
               </Link>
-              <Link className="btn btn--line" href="/etude">
-                Étudier le corpus <ArrowIcon size={18} />
+              <Link className="nave__link" href="/etude">
+                Étudier le corpus
               </Link>
             </div>
           </div>
+          <HeroArch />
         </div>
       </section>
 
       {daily.length ? (
         <section className="section section--tight daily" aria-labelledby="titre-jour">
           <div className="container container--reading">
-            <h2 id="titre-jour" className="kicker">Pour aujourd&apos;hui</h2>
+            <h2 id="titre-jour" className="daily__title">Pour aujourd&apos;hui</h2>
             {daily.map((d) => (
               <figure key={d.kind} className="daily__item">
                 <blockquote>
@@ -76,8 +71,8 @@ export default function HomePage() {
       <section className="section pillars" aria-labelledby="titre-piliers">
         <div className="container container--wide">
           <header className="section-head">
-            <p className="kicker">Trois piliers</p>
-            <h2 id="titre-piliers">L&apos;enseignement, ordonné</h2>
+            <h2 id="titre-piliers">Trois piliers d&apos;enseignement</h2>
+            <p className="section-head__intro">Chaque ouvrage, prédication ou écrit appartient à l&apos;un de ces piliers.</p>
           </header>
           <ol className="pillars__list">
             {PILLARS.map((p) => {
@@ -90,11 +85,7 @@ export default function HomePage() {
                     <Link href={`/enseignements/${p.id}`}>{p.label}</Link>
                   </h3>
                   {themes.length ? (
-                    <ul className="cartouche__themes" aria-label="Thèmes">
-                      {themes.map((t) => (
-                        <li key={t}>{t}</li>
-                      ))}
-                    </ul>
+                    <p className="cartouche__themes">{themes.join(", ")}</p>
                   ) : null}
                   <p className="cartouche__meta">
                     {count === 0 ? "Aucun ouvrage publié" : count === 1 ? "1 ouvrage" : `${count} ouvrages`}
@@ -110,11 +101,10 @@ export default function HomePage() {
         <div className="container container--wide">
           <header className="section-head section-head--split">
             <div>
-              <p className="kicker">Les ouvrages</p>
-              <h2 id="titre-ouvrages">La bibliothèque du ministère</h2>
+              <h2 id="titre-ouvrages">Les ouvrages</h2>
             </div>
             <Link className="link-arrow" href="/bibliotheque">
-              Toute la bibliothèque <ArrowIcon size={18} />
+              Toute la bibliothèque
             </Link>
           </header>
           <ul className="shelf__row">
@@ -133,7 +123,6 @@ export default function HomePage() {
       <section className="section study-band" aria-labelledby="titre-etude">
         <div className="container container--wide study-band__grid">
           <div>
-            <p className="kicker">Étude</p>
             <h2 id="titre-etude">{STUDY_TITLE}</h2>
           </div>
           <div className="study-band__body">
@@ -157,14 +146,13 @@ export default function HomePage() {
       <section className="section contact" id="contact" aria-labelledby="titre-contact">
         <div className="container container--wide contact__grid">
           <div>
-            <p className="kicker">Consultation</p>
             <h2 id="titre-contact">Écrire au ministère</h2>
             <p className="lead">
               Pour une question personnelle, la consultation privée est distincte du moteur d&apos;étude : vos messages
               ne sont lus que par le ministère.
             </p>
             <Link className="btn btn--line" href="/discussion">
-              Ouvrir une consultation privée <ArrowIcon size={18} />
+              Ouvrir une consultation privée
             </Link>
           </div>
           <ContactList />

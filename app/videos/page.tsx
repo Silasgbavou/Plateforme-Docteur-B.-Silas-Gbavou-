@@ -11,7 +11,6 @@ export default function VideosPage() {
     <div className="section">
       <div className="container container--standard">
         <header className="page-head">
-          <p className="kicker">Prédications</p>
           <h1>Enseignements en vidéo</h1>
         </header>
         {videos.length === 0 ? (
@@ -23,7 +22,7 @@ export default function VideosPage() {
                 <Link href={`/videos/${v.id}`} className="video-card">
                   <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt="" width={480} height={360} loading="lazy" decoding="async" />
                   <span className="video-card__title">{v.title}</span>
-                  <span className="subtle">{getPillar(v.pillar ?? "")?.label}{v.theme ? ` · ${v.theme}` : ""}</span>
+                  <span className="subtle">{getPillar(v.pillar ?? "")?.label}{v.theme ? `, ${v.theme}` : ""}</span>
                 </Link>
               </li>
             ))}

@@ -17,7 +17,6 @@ export default function TeachingsIndex() {
     <div className="section">
       <div className="container container--wide">
         <header className="page-head">
-          <p className="kicker">Enseignements</p>
           <h1>Trois piliers, plusieurs formats</h1>
           <p className="lead">Livres, prédications, écrits et audios sont rangés sous l&apos;un des trois piliers de l&apos;enseignement.</p>
         </header>
@@ -34,7 +33,7 @@ export default function TeachingsIndex() {
               <li key={p.id} className="cartouche">
                 <span className="cartouche__number oldstyle" aria-hidden="true">{p.number}</span>
                 <h2 className="cartouche__title"><Link href={`/enseignements/${p.id}`}>{p.label}</Link></h2>
-                <p className="cartouche__meta">{counts.length ? counts.map(([c, s, pl]) => `${c} ${c > 1 ? pl : s}`).join(" · ") : "Contenus en préparation"}</p>
+                <p className="cartouche__meta">{counts.length ? counts.map(([c, s, pl]) => `${c} ${c > 1 ? pl : s}`).join(", ") : "Contenus en préparation"}</p>
               </li>
             );
           })}

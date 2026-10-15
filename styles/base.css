@@ -25,6 +25,8 @@ body {
 img, svg, video, canvas { display: block; max-width: 100%; }
 img { height: auto; }
 button, input, select, textarea { font: inherit; color: inherit; }
+a, button, input, select, textarea, label, summary { touch-action: manipulation; -webkit-tap-highlight-color: rgb(11 37 69 / 0.08); }
+[id] { scroll-margin-top: calc(var(--header-h) + var(--space-4)); }
 a { color: var(--color-link); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
 a:hover { text-decoration-color: var(--color-accent-line); }
 p { margin: 0 0 var(--space-4); }
@@ -82,18 +84,8 @@ em, i, .italic { font-style: italic; }
 .prose p { margin-bottom: var(--space-4); }
 
 /* Surtitre éditorial : petites capitales espacées précédées d'un filet or */
-.kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
-  font-size: var(--step--1);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-accent-text);
-  font-weight: 600;
-  margin-bottom: var(--space-4);
-}
-.kicker::before { content: ""; width: 2rem; height: 1px; background: var(--color-accent-line); }
+/* Repère discret (bureau) : italique, casse normale — jamais de capitales espacées. */
+.kicker { display: block; font-family: var(--font-display); font-style: italic; font-size: var(--step-1); color: var(--color-accent-text); margin-bottom: var(--space-3); }
 
 .lead { font-size: var(--step-1); color: var(--color-text-muted); line-height: 1.6; max-width: 56ch; }
 .muted { color: var(--color-text-muted); }
