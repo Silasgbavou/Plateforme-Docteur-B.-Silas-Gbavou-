@@ -2,36 +2,43 @@
 
 **Ce qui est livré** : une composition instrumentale originale et tous les effets sonores, entièrement synthétisés par le script `tools/audio/compose.py` (synthèse additive, enveloppes, réverbération à convolution calculée). Aucun échantillon, aucune boucle, aucune œuvre existante imitée. Le script est la partition : le relancer redonne exactement les mêmes fichiers.
 
-**Limite à connaître** : il s’agit d’instruments synthétiques (piano feutré, nappes, ensemble de cordes, basse, percussions douces), pas d’un enregistrement d’orchestre. Je ne peux pas écouter le résultat : le contrôle a été fait par la mesure (niveaux, crêtes, spectre, calage). Une écoute humaine reste nécessaire avant diffusion.
+**Limite à connaître** : il s’agit d’instruments synthétiques (batterie, basse, arpèges, piano, nappes, cordes), pas d’un enregistrement d’orchestre. Je ne peux pas écouter le résultat : le contrôle a été fait par la mesure (niveaux, crêtes, spectre, calage). Une écoute humaine reste nécessaire avant diffusion.
 
-## Fichiers (48 kHz, 24 bits, stéréo) dans `out/audio/`
+## Fichiers (48 kHz, 24 bits, stéréo, FLAC sans perte) dans `out/audio/`
 
 | Fichier | Contenu | Niveau mesuré |
 |---|---|---|
-| `MIX_ME.wav` | Musique + effets, sans voix (bande du film livré) | −13,8 LUFS, crête −1,5 dBFS |
-| `MIX_ME_DUCKE.wav` | Même mixage, pré-atténué de 8 dB sous les 18 fenêtres de voix | −18,2 LUFS, crête −1,7 dBFS |
-| `STEM_MUSIQUE.wav` | Musique seule | −13,8 LUFS |
-| `STEM_SFX.wav` | Effets seuls | −26,6 LUFS (12,8 LU sous la musique) |
+| `MIX_ME` | Musique + effets, sans voix (bande du film livré) | −13,8 LUFS, crête vraie −1,8 dBTP |
+| `MIX_ME_DUCKE` | Même mixage, pré-atténué de 8 dB sous les 18 fenêtres de voix | environ −18 LUFS |
+| `STEM_MUSIQUE` | Musique seule | environ −14 LUFS |
+| `STEM_SFX` | Effets et sons d’interface seuls | environ −24 LUFS |
 | `cues.json` | Temps des mesures, repères d’effets, fenêtres de voix | — |
 
 Le stem voix (VO) n’existe pas encore : il sera fourni après enregistrement.
 
-## Forme
+## Forme (version 2 : musique publicitaire moderne, rythmée)
 
-- Tonalité : **ré majeur** (lumière, solennité) ; couleur **si mineur** pour les séquences de nuit (04 et 06) ; cadence finale résolutive sur ré.
-- Mesure 4/4, 37 mesures. Tempo adaptatif **80 à 90 BPM** : chaque séquence contient un nombre entier de mesures, de sorte que les transitions tombent exactement sur 0, 8, 19, 31, 45, 61, 76, 88 et 105 s.
-- Thème (piano, 4 mesures) : fa♯–la–ré’ | mi’–do♯’–la | ré’–fa♯’–mi’–ré’ | si–la. Tierce puis quarte ascendantes : simple, mémorisable, discret.
+- Tonalité **ré majeur**, couleur **si mineur** pour les séquences de nuit ; 37 mesures à 4/4 ; tempo 80 à 90 BPM calé pour que les transitions tombent exactement sur 0, 8, 19, 31, 45, 61, 76, 88 et 105 s.
+- Instrumentation : **batterie** (grosse caisse, caisse claire, clap, charleston fermé et ouvert, toms, cymbale crash), **basse synthé**, **arpèges en doubles croches**, piano (thème), nappes et cordes, **montées (risers) et impacts** à chaque transition, **pompage** des nappes sur la grosse caisse.
+- Thème (piano, 4 mesures) : fa♯–la–ré’ | mi’–do♯’–la | ré’–fa♯’–mi’–ré’ | si–la.
 
-| Séq. | Temps | Mesures | Tempo | Harmonie (une mesure par barre) | Instrumentation et geste |
-|---|---|---|---|---|---|
-| 01 | 0–8 s | 1–3 | 90 | Ré sus2 \| Si m7 \| Sol maj7 – La sus4 | Nappe seule en fondu, air lumineux, souffle montant vers 8 s |
-| 02 | 8–19 s | 4–7 | 87,3 | Ré \| La/Do♯ \| Si m7 \| Sol – La sus4 | Impact grave doux, **exposition du thème** au piano, cordes tenues, basse |
-| 03 | 19–31 s | 8–11 | 80 | Sol add9 \| Ré/Fa♯ \| Mi m7 \| La sus4 – La | Arpèges calmes en croches, réponse du thème à l’octave |
-| 04 | 31–45 s | 12–16 | 85,7 | Si m9 \| Sol maj7 \| Ré/Fa♯ \| Mi m9 \| La sus4 | Pulsations légères, notes hautes espacées, nappe sombre |
-| 05 | 45–61 s | 17–22 | 90 | Ré \| Si m7 \| Sol \| La \| Fa♯ m7 – Si m7 \| Sol – La | **Reprise du thème**, ostinato de cordes, tics soyeux en croches, tambour grave sur les premiers temps |
-| 06 | 61–76 s | 23–27 | 80 | Si m7 \| Sol maj7 \| Mi m7 \| Ré/Fa♯ \| La sus4 – La | Ligne de cordes ascendante, arpèges cristallins, grande montée vers l’aube |
-| 07 | 76–88 s | 28–31 | 80 | Ré \| Sol/Ré \| Si m7 \| La | **Thème aux cordes**, piano discret |
-| 08 | 88–105 s | 32–37 | 90 puis ralenti | Sol \| La \| Si m7 – La/Do♯ \| Sol – La sus4 \| Ré add9 \| Ré | Énoncé final, résolution, accord arpégé, queue de réverbération |
+| Séq. | Temps | Mesures | Harmonie | Rythmique |
+|---|---|---|---|---|
+| 01 | 0–8 s | 1–3 | Ré sus2 \| Si m7 \| Sol maj7 – La sus4 | Sans batterie ; nappe, air, montée de 3,2 s vers la révélation |
+| 02 | 8–19 s | 4–7 | Ré \| La/Do♯ \| Si m7 \| Sol – La sus4 | **Impact + crash à 8,0 s**, groove pop (grosse caisse syncopée, clap sur 2 et 4, charleston en croches), basse, arpèges, thème au piano, relance de toms |
+| 03 | 19–31 s | 8–11 | Sol add9 \| Ré/Fa♯ \| Mi m7 \| La sus4 – La | Même pulsation allégée pour laisser entendre le papier ; relance, montée |
+| 04 | 31–45 s | 12–16 | Si m9 \| Sol maj7 \| Ré/Fa♯ \| Mi m9 \| La sus4 | Mi-tempo aéré (grosse caisse + clap au 3e temps), roulement de caisse claire et montée vers 45 s |
+| 05 | 45–61 s | 17–22 | Ré \| Si m7 \| Sol \| La \| Fa♯ m7 – Si m7 \| Sol – La | **Plein régime** : quatre temps marqués, charleston en doubles croches, basse en croches, thème repris, roulement et montée |
+| 06 | 61–76 s | 23–27 | Si m7 \| Sol maj7 \| Mi m7 \| Ré/Fa♯ \| La sus4 – La | Demi-tempo ample (caisse claire au 3e temps), toms, **grande montée de 3,2 s** vers la lumière |
+| 07 | 76–88 s | 28–31 | Ré \| Sol/Ré \| Si m7 \| La | Impact + crash, groove chaleureux, charleston ouvert, thème aux cordes |
+| 08 | 88–105 s | 32–37 | Sol \| La \| Si m7 – La/Do♯ \| Sol – La sus4 \| Ré add9 \| Ré | Plein régime, relance, ralenti, **impact final** sur l’accord de ré, résonance |
+
+## Sons d’interface (design d’interaction)
+
+- **Molette de défilement** : crans audibles dont la cadence suit la vitesse du défilement (serrés au milieu, espacés au départ et à l’arrivée), puis butée douce à l’arrêt : 33,0–34,6 s, 37,3–38,4 s, 41,0–42,0 s.
+- **Sélection** (surlignages, cartes, arrêts du carrousel) : « pop » ascendant court.
+- **Boutons de contact** : clic net + pop, un par plateforme (Facebook 94,2 s, WhatsApp 95,5 s, e-mail 96,8 s), répété sur les deux cartes.
+- **Étiquettes de page** et lignes de contact : clics légers.
 
 ## Cue sheet des effets (calés sur les images clés du film)
 

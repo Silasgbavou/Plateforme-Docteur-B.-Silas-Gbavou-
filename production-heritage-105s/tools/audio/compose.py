@@ -247,8 +247,6 @@ for b in range(16, 22):
         for i in range(int(ln * 2)):
             tt = bt(b, s0 + i * 0.5)
             strings(ch[2 + (i % 2)] + 12, tt, 0.16, 0.12 + 0.012 * (b - 16), att=0.03, rel=0.22, bright=1.2, pan=0.3 if i % 2 else -0.3)
-            shaker(tt, 0.05 if i % 2 else 0.08, pan=0.4 if i % 2 else -0.4)
-    drum(bt(b, 0), 0.20 + 0.02 * (b - 16), f0=64, f1=40, dec=0.5)
 for (rb, beat, ln, m) in [(0, 0, 2, 73), (0, 2, 1, 76), (0, 3, 1, 78), (1, 0, 2, 79), (1, 2, 2, 76)]:
     piano(m, bt(20 + rb, beat), ln / 4 * BAR_L[20], 0.52)
 # séquence 06 — immersion : ligne de cordes ascendante, arpèges hauts, montée vers l'aube
@@ -275,7 +273,6 @@ for i, m in enumerate((38, 50, 57, 62, 66, 69, 74, 86)):   # accord final arpég
     piano(m, bt(36, 0) + i * 0.07, 3.3, 0.5 - 0.02 * i)
 
 # percussions cinématiques légères, souffles de transition et scintillements
-drum(8.0, 0.75, f0=72, f1=36, dec=0.9); drum(45.0, 0.42); drum(76.0, 0.62, f0=70, f1=38, dec=0.8); drum(88.0, 0.5); drum(bt(35, 0), 0.5, dec=0.9); drum(bt(36, 0), 0.4, dec=1.1)
 swell(8.0, 2.6, 0.085); swell(31.0, 1.2, 0.05); swell(45.0, 1.4, 0.05); swell(61.0, 1.2, 0.045); swell(76.0, 2.8, 0.10, lo=2500, hi=11000); swell(88.0, 1.4, 0.05)
 for (t, m) in [(8.0, 86), (8.12, 93), (8.25, 98), (76.0, 86), (76.14, 90), (76.28, 93), (76.42, 98), (bt(36, 0), 98), (bt(36, 0) + 0.2, 102)]:
     pluck(m, t, 0.07, pan=rng.uniform(-0.6, 0.6), dec=2.6)
@@ -362,6 +359,185 @@ whoosh(87.7, 1.3, 0.04, 200, 2000, -0.8, -0.4)
 for i, tp in enumerate(CUES['rows']): tick(tp + 0.05, 0.035, 0.45, 2000 + 120 * (i % 4))
 for i, tp in enumerate(CUES['pulses']): tick(tp + 0.2, 0.04, 0.45, (2100, 2350, 2600)[i]); ting(tp + 0.2, 0.022, (90, 93, 95)[i], 0.45)
 
+# ---------------------------------------------------------------- RYTHMIQUE MODERNE : batterie, basse synthé, arpèges, pompage (style publicitaire)
+B['drum'] = bus(); B['hat'] = bus(); B['synb'] = bus(); B['arp'] = bus(); B['fx'] = bus()
+KICKS = []
+
+
+def kick(t0, amp=1.0):
+    n = int(0.5 * SR); t = np.arange(n) / SR
+    f = 46 + 130 * np.exp(-t / 0.028); s = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t / 0.16)
+    s += noise_band(n, 1500, 6000) * np.exp(-t / 0.004) * 0.35                      # attaque (clic)
+    place('drum', np.tanh(s * 1.6) * 0.8, t0, gain=amp); KICKS.append((t0, amp))
+
+
+def snare(t0, amp=1.0):
+    n = int(0.4 * SR); t = np.arange(n) / SR
+    body = (np.sin(2 * np.pi * 185 * t) + 0.6 * np.sin(2 * np.pi * 330 * t)) * np.exp(-t / 0.05)
+    s = body * 0.5 + noise_band(n, 1200, 9000) * np.exp(-t / 0.085) * 0.9
+    place('drum', s * (1 - np.exp(-t / 0.0008)), t0, gain=amp * 0.55); place('fx', s, t0, gain=amp * 0.12)
+
+
+def clap(t0, amp=1.0):
+    n = int(0.35 * SR); t = np.arange(n) / SR; env = np.zeros(n)
+    for d in (0.0, 0.011, 0.022): env += np.where(t >= d, np.exp(-(t - d) / 0.012), 0) * 0.6
+    env += np.where(t >= 0.03, np.exp(-(t - 0.03) / 0.09), 0)
+    s = noise_band(n, 900, 3800) * env
+    place('drum', s, t0, pan=0.08, gain=amp * 0.42); place('fx', s, t0, gain=amp * 0.16)
+
+
+def hat(t0, amp=1.0, open_=False, pan=0.25):
+    d = 0.16 if open_ else 0.028; n = int((d * 5) * SR); t = np.arange(n) / SR
+    x = rng.standard_normal(n); s = sosfilt(butter(3, 7500, 'highpass', fs=SR, output='sos'), x) * np.exp(-t / d) * (1 - np.exp(-t / 0.0006))
+    place('hat', s, t0, pan=pan, gain=amp * 0.16)
+
+
+def tom(t0, m, amp=1.0, pan=0.0):
+    n = int(0.5 * SR); t = np.arange(n) / SR; f = hz(m) * (1 + 0.5 * np.exp(-t / 0.03))
+    place('drum', np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t / 0.14), t0, pan=pan, gain=amp * 0.5)
+
+
+def crash(t0, amp=1.0):
+    n = int(2.6 * SR); t = np.arange(n) / SR
+    l = sosfilt(butter(2, 4500, 'highpass', fs=SR, output='sos'), rng.standard_normal(n)) * np.exp(-t / 0.7)
+    r = sosfilt(butter(2, 4500, 'highpass', fs=SR, output='sos'), rng.standard_normal(n)) * np.exp(-t / 0.7)
+    place('hat', np.stack([l, r], 1), t0, gain=amp * 0.10)
+
+
+def riser(t1, dur, amp=1.0):
+    """montée : bruit filtré ascendant + note glissante, aboutit à t1"""
+    n = int(dur * SR); t = np.arange(n) / SR; u = t / dur
+    x = rng.standard_normal(n); out = np.zeros(n); K = 32; e = np.linspace(0, n, K + 1).astype(int)
+    for k in range(K):
+        c = 500 * (9000 / 500) ** ((k + 0.5) / K)
+        sg = sosfilt(butter(2, [c * 0.7, min(c * 1.5, SR / 2 - 200)], 'bandpass', fs=SR, output='sos'), x[max(0, e[k] - 1500):e[k + 1]]); out[e[k]:e[k + 1]] = sg[-(e[k + 1] - e[k]):]
+    tone = np.sin(2 * np.pi * np.cumsum(220 * 2 ** (u * 2)) / SR) * 0.25
+    place('fx', (out + tone) * u ** 2.2, t1 - dur, gain=amp * 0.16)
+
+
+def impact(t0, amp=1.0):
+    n = int(2.2 * SR); t = np.arange(n) / SR
+    s = np.sin(2 * np.pi * np.cumsum(38 + 60 * np.exp(-t / 0.06)) / SR) * np.exp(-t / 0.6) + noise_band(n, 200, 2500) * np.exp(-t / 0.12) * 0.5
+    place('drum', np.tanh(s * 1.4), t0, gain=amp * 0.7); place('fx', s, t0, gain=amp * 0.25)
+
+
+def synbass(m, t0, dur, amp=1.0):
+    n = int((dur + 0.08) * SR); t = np.arange(n) / SR; f = hz(m)
+    saw = sum(np.sin(2 * np.pi * f * h * t) / h * np.exp(-t * (1.5 + 2.2 * h)) for h in range(1, 9))
+    s = (np.sin(2 * np.pi * f * t) * 0.9 + saw * 0.7) * np.clip(t / 0.004, 0, 1) * np.where(t < dur, 1, np.exp(-(t - dur) / 0.02))
+    place('synb', np.tanh(s * 1.3), t0, gain=amp * 0.42)
+
+
+def arp(m, t0, amp=1.0, pan=0.0):
+    n = int(0.5 * SR); t = np.arange(n) / SR; f = hz(m)
+    s = sum(np.sin(2 * np.pi * f * h * t) / h ** 1.2 * np.exp(-t * (7 + 3 * h)) for h in range(1, 7)) * (1 - np.exp(-t / 0.002))
+    place('arp', s, t0, pan=pan, gain=amp * 0.10)
+
+
+def groove(b, K=(0, 7, 10), S=(), C=(4, 12), hats=2, hv=1.0, kv=1.0, oh=(), ghost=False):
+    """une mesure de 16 pas : K = grosse caisse, S = caisse claire, C = clap, hats = pas entre charlestons"""
+    L = BAR_L[b] / 16
+    for st in K: kick(bt(b) + st * L, kv * (1.0 if st % 4 == 0 else 0.82))
+    for st in S: snare(bt(b) + st * L)
+    for st in C: clap(bt(b) + st * L)
+    for st in range(0, 16, hats):
+        sw = 0.012 if (st % 4 == 2 and hats == 1) else 0.0
+        hat(bt(b) + st * L + sw, hv * (1.0 if st % 4 == 0 else 0.62 if st % 2 == 0 else 0.4), pan=0.3 if st % 4 else 0.18)
+    for st in oh: hat(bt(b) + st * L, hv * 0.9, open_=True, pan=-0.2)
+    if ghost: [hat(bt(b) + st * L, hv * 0.22, pan=-0.3) for st in (3, 11, 15)]
+
+
+def fill(b, kind='tom'):
+    """relance sur la seconde moitié de la mesure b"""
+    L = BAR_L[b] / 16
+    if kind == 'tom':
+        for i, (st, m) in enumerate(((10, 50), (11, 50), (12, 47), (13, 45), (14, 43), (15, 43))): tom(bt(b) + st * L, m, 0.7 + 0.06 * i, pan=-0.4 + 0.16 * i)
+    else:
+        for i in range(16): snare(bt(b) + (8 + i * 0.5) * L, 0.25 + 0.05 * i)
+
+
+def bassline(b, pat=(0, 3, 6, 8, 11, 14), amp=1.0):
+    for (s0, ln, ch, bs) in HARM[b]:
+        if bs is None: continue
+        L = BAR_L[b] / 16; a, e = int(s0 * 4), int((s0 + ln) * 4)
+        for st in pat:
+            if a <= st < e: synbass(bs + (12 if bs < 30 else 0), bt(b) + st * L, L * 1.6, amp * (1.0 if st % 4 == 0 else 0.8))
+
+
+def arps(b, amp=1.0, octave=12):
+    for (s0, ln, ch, bs) in HARM[b]:
+        L = BAR_L[b] / 16; tones = [ch[1], ch[2], ch[3], ch[2] + 12, ch[3], ch[1] + 12, ch[2], ch[3]]
+        for i in range(int(ln * 4)):
+            st = int(s0 * 4) + i; arp(tones[st % 8] + octave, bt(b) + st * L, amp * (1.0 if st % 4 == 0 else 0.7), pan=0.55 if st % 2 else -0.55)
+
+
+# 01 prologue : pas de batterie, montée vers la révélation
+riser(8.0, 3.2, 1.0)
+# 02 révélation : impact, groove pop-cinématique
+impact(8.0, 1.0); crash(8.0)
+for b in range(3, 7): groove(b, K=(0, 7, 10), C=(4, 12), hats=2, ghost=True); bassline(b); arps(b, 0.8)
+fill(6, 'tom')
+# 03 ouverture du livre : même pulsation, plus légère (rim/clap doux), on laisse la place au papier
+crash(19.0, 0.6)
+for b in range(7, 11): groove(b, K=(0, 10), C=(4, 12), hats=2, hv=0.8, kv=0.9); bassline(b, (0, 6, 8, 14), 0.85); arps(b, 0.55)
+fill(10, 'tom'); riser(31.0, 1.4, 0.7)
+# 04 lecture : mi-tempo aéré (grosse caisse + clap au 3e temps), charleston discret
+impact(31.0, 0.6)
+for b in range(11, 16): groove(b, K=(0, 6), C=(8,), hats=2, hv=0.6, kv=0.85); bassline(b, (0, 6, 8), 0.8); arps(b, 0.45)
+fill(15, 'snare'); riser(45.0, 2.0, 0.9)
+# 05 quatre parties : plein régime, quatre temps marqués, charleston en doubles croches
+impact(45.0, 0.9); crash(45.0)
+for b in range(16, 22): groove(b, K=(0, 4, 8, 12) if b >= 18 else (0, 7, 8, 10), C=(4, 12), hats=1, hv=0.9, oh=(14,) if b % 2 else ()); bassline(b, (0, 2, 4, 6, 8, 10, 12, 14) if b >= 18 else (0, 3, 6, 8, 11, 14)); arps(b, 0.9)
+fill(21, 'snare'); riser(61.0, 2.2, 1.0)
+# 06 immersion : demi-tempo ample, toms, grande montée vers la lumière
+impact(61.0, 0.9); crash(61.0, 0.8)
+for b in range(22, 27): groove(b, K=(0, 6, 10), S=(8,), C=(), hats=1, hv=0.75); bassline(b, (0, 6, 10), 0.9); arps(b, 0.7, 24)
+fill(25, 'tom'); fill(26, 'snare'); riser(76.0, 3.2, 1.25)
+# 07 auteurs : groove chaleureux, charleston ouvert
+impact(76.0, 1.0); crash(76.0)
+for b in range(27, 31): groove(b, K=(0, 7, 10), C=(4, 12), hats=2, oh=(6, 14), ghost=True); bassline(b); arps(b, 0.75)
+fill(30, 'tom'); riser(88.0, 1.6, 0.9)
+# 08 signature : plein régime puis sortie nette sur l'accord final
+impact(88.0, 1.0); crash(88.0)
+for b in range(31, 35): groove(b, K=(0, 4, 8, 12) if b >= 33 else (0, 7, 10), C=(4, 12), hats=1, hv=0.9, oh=(14,)); bassline(b, (0, 2, 4, 6, 8, 10, 12, 14) if b >= 33 else (0, 3, 6, 8, 11, 14)); arps(b, 0.9)
+fill(34, 'tom')
+kick(bt(35, 0)); crash(bt(35, 0), 0.9); kick(bt(35, 2), 0.8); clap(bt(35, 2)); impact(bt(36, 0), 1.0); crash(bt(36, 0), 1.0)
+
+# pompage (sidechain) : nappes, cordes, basse et arpèges respirent sur la grosse caisse
+pump = np.ones(N + TAIL)
+for (tk, a) in KICKS:
+    i = int(tk * SR); n = int(0.32 * SR); tt = np.arange(n) / SR
+    pump[i:i + n] = np.minimum(pump[i:i + n], 1 - 0.5 * a * np.exp(-tt / 0.11))
+for k in ('pad', 'str', 'synb', 'arp'): B[k] *= pump[:, None]
+
+# ---------------------------------------------------------------- sons d'interface renforcés (défilement, boutons, sélections)
+def ui_click(t0, amp, f=1450, pan=0.0):
+    n = int(0.05 * SR); t = np.arange(n) / SR
+    s = (np.sin(2 * np.pi * f * t) * np.exp(-t / 0.006) + noise_band(n, 2500, 8000) * np.exp(-t / 0.0025) * 0.7) * (1 - np.exp(-t / 0.0004))
+    place('sfx', s, t0, pan=pan, gain=amp); place('sfxwet', s, t0, pan=pan, gain=amp * 0.25)
+
+
+def ui_pop(t0, amp, f0=520, f1=980, pan=0.0):
+    n = int(0.16 * SR); t = np.arange(n) / SR
+    s = np.sin(2 * np.pi * np.cumsum(f0 + (f1 - f0) * np.clip(t / 0.05, 0, 1)) / SR) * np.exp(-t / 0.035) * (1 - np.exp(-t / 0.001))
+    place('sfx', s, t0, pan=pan, gain=amp); place('sfxwet', s, t0, pan=pan, gain=amp * 0.5)
+
+
+# molette de défilement : crans dont la cadence suit la vitesse (accélération, croisière, ralenti), puis butée douce
+for (a, b_, pan) in ((33.0, 34.6, -0.4), (37.3, 38.4, 0.0), (41.0, 42.0, 0.4)):
+    nt = int(round((b_ - a) * 11))
+    for i in range(nt):
+        u = (i + 0.5) / nt; x = np.arcsin(2 * u - 1) / np.pi + 0.5         # inverse d'une progression douce : crans serrés au milieu
+        ui_click(a + x * (b_ - a), 0.055 + 0.03 * np.sin(np.pi * x), 1250 + 500 * np.sin(np.pi * x), pan)
+    thud(b_ + 0.02, 0.07, 140, 90, pan)
+for i, tp in enumerate(CUES['highlights']): ui_pop(tp, 0.10, 560, 1050, (-0.4, 0.0, 0.4)[i])
+for i, tp in enumerate(CUES['part_focus']): ui_click(tp + 0.02, 0.09, 1700, (-0.4, 0.4, -0.4, 0.4)[i]); ui_pop(tp + 0.85, 0.09, 480 + 60 * i, 900 + 110 * i, (-0.4, 0.4, -0.4, 0.4)[i])
+for i, tp in enumerate(CUES['ring_stops']): ui_pop(tp, 0.10, 600, 1150 + 80 * i)
+for tp in (22.2, 24.6, 26.5, 29.2): ui_pop(tp, 0.07, 500, 880, -0.6)                                   # étiquettes de page
+for i, tp in enumerate(CUES['rows']): ui_click(tp + 0.05, 0.07, 1500 + 110 * (i % 4), 0.45)
+for i, tp in enumerate(CUES['pulses']):                                                                # boutons Facebook, WhatsApp, e-mail (deux cartes)
+    for j in (0, 1): ui_click(tp + 0.18 + j * 0.16, 0.11, 1900, 0.45); ui_pop(tp + 0.2 + j * 0.16, 0.12, 620 + 90 * i, 1180 + 140 * i, 0.45)
+
 # ---------------------------------------------------------------- réverbération, mixage, niveaux
 def make_ir(rt=3.4, bright=5200):
     n = int(rt * SR); t = np.arange(n) / SR
@@ -380,11 +556,12 @@ def rev(x, amt):
     return y * amt
 
 
-music = (B['pad'] * 0.8 + rev(B['pad'], 0.20) + B['str'] * 0.8 + rev(B['str'], 0.34) + B['pno'] * 1.15 + rev(B['pno'], 0.28)
-         + B['bass'] * 0.56 + B['perc'] * 0.9 + rev(B['perc'], 0.22) + B['spark'] * 1.0 + rev(B['spark'], 0.5))
+music = (B['pad'] * 0.62 + rev(B['pad'], 0.16) + B['str'] * 0.62 + rev(B['str'], 0.26) + B['pno'] * 0.95 + rev(B['pno'], 0.22)
+         + B['bass'] * 0.30 + B['perc'] * 0.35 + rev(B['perc'], 0.10) + B['spark'] * 0.8 + rev(B['spark'], 0.4)
+         + B['drum'] * 1.0 + rev(B['drum'], 0.035) + B['hat'] * 1.0 + rev(B['hat'], 0.05) + B['synb'] * 1.0 + B['arp'] * 1.0 + rev(B['arp'], 0.30) + B['fx'] * 1.0 + rev(B['fx'], 0.35))
 # égalisation de bus : étagère haute (+5 dB au-dessus de 2,5 kHz) pour l'air et la clarté, médiums-graves légèrement dégagés
 music = music + 0.8 * sosfilt(butter(1, 2500, 'highpass', fs=SR, output='sos'), music, axis=0) - 0.18 * sosfilt(butter(2, [180, 420], 'bandpass', fs=SR, output='sos'), music, axis=0)
-sfx = (B['sfx'] + rev(B['sfxwet'], 0.42)) * 2.8
+sfx = (B['sfx'] + rev(B['sfxwet'], 0.42)) * 3.6
 # passe-haut doux, fondu final, limitation douce
 hp = butter(2, 28, 'highpass', fs=SR, output='sos')
 music = sosfilt(hp, music, axis=0)[:N]; sfx = sosfilt(butter(2, 60, 'highpass', fs=SR, output='sos'), sfx, axis=0)[:N]
@@ -410,11 +587,11 @@ music *= g; sfx *= g; mix = music + sfx
 peak = np.abs(mix).max()
 
 
-def limit(x, ceil=0.80):
+def limit(x, ceil=0.72):
     """limiteur transparent à anticipation (5 ms) : plafond -1,9 dBFS"""
     env = np.abs(x).max(1); gr = np.minimum(1.0, ceil / np.maximum(env, 1e-9))
     gr = minimum_filter1d(gr, 480); gr = uniform_filter1d(gr, 480); gr = uniform_filter1d(gr, 240)
-    return x * gr[:, None]
+    return np.clip(x * gr[:, None], -ceil * 1.04, ceil * 1.04)        # sécurité : aucune crête au-delà du plafond
 
 
 mix_l = limit(mix)
@@ -427,7 +604,7 @@ for a, b in VO:
     duck = np.minimum(duck, 1 - (1 - 10 ** (-8 / 20)) * np.clip((t - (a - 0.25)) / 0.25, 0, 1) * np.clip(((b + 0.6) - t) / 0.6, 0, 1))
 mix_d = limit((music * duck[:, None]) + sfx * (0.6 + 0.4 * duck[:, None]))
 
-for name, x in (('STEM_MUSIQUE', limit(music, 0.89)), ('STEM_SFX', sfx), ('MIX_ME', mix_l), ('MIX_ME_DUCKE', mix_d)):
+for name, x in (('STEM_MUSIQUE', limit(music, 0.78)), ('STEM_SFX', sfx), ('MIX_ME', mix_l), ('MIX_ME_DUCKE', mix_d)):
     sf.write(os.path.join(OUT, name + '.wav'), np.clip(x, -1, 1), SR, subtype='PCM_24')
 json.dump({'sr': SR, 'bars': [round(x, 4) for x in BAR_T], 'bar_len': [round(x, 4) for x in BAR_L], 'cues': CUES, 'vo_windows': VO, 'duck_db': -8}, open(os.path.join(OUT, 'cues.json'), 'w'), indent=1)
 print('ok', OUT)

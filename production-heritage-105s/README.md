@@ -7,10 +7,8 @@ Auteurs de l’ouvrage : Docteur B. Silas Gbavou et Pasteur M. Appolos Gbavou.
 
 | Fichier | Contenu |
 |---|---|
-| `out/HERITAGE_105s_SANS_VOIX.mp4` | **Film complet, musique originale et effets, sans voix** (H.264, AAC 48 kHz) |
-| `out/HERITAGE_105s_MUET.mp4` | Même image, sans aucune piste audio |
-| `out/HERITAGE_105s_ME_DUCKE.mp4` | Film avec la musique déjà atténuée sous les fenêtres de voix : poser la voix dessus |
-| `out/audio/*.flac` | Mixage sans voix, mixage pré-atténué, stem musique, stem effets (48 kHz, 24 bits, sans perte) et `cues.json` |
+| `out/HERITAGE_105s_SANS_VOIX.mp4` | **Le film complet, 105 s, musique originale et effets, sans voix** (H.264 1080p30, AAC 48 kHz) |
+| `out/audio/*.flac` | Mixage sans voix, **mixage pré-atténué sous la voix** (à utiliser pour poser la voix), stem musique, stem effets (48 kHz, 24 bits, sans perte) et `cues.json` |
 | `out/controle/` | Planches-contact et images de contrôle du rendu final |
 | `docs/01_AUDIT_PDF_ET_CONFORMITE.md` | Audit du PDF avec preuves paginées, pages retenues, conformité |
 | `docs/02_TABLEAU_DES_PLANS.md` + `PLAN_PAR_PLAN_REALISE.csv` | Les huit plans : timecodes, caméra, focales, couches, images clés, transitions, audio, recette |
@@ -63,12 +61,17 @@ python3 tools/verify_texts.py  source/OUVRAGE_SOURCE_INTEGRAL.pdf
 # 2. audio
 python3 tools/audio/compose.py
 
-# 3. image (environ 1,3 s par image en rendu logiciel ; deux moitiés en parallèle)
+# 3. image de base (environ 1,3 s par image en rendu logiciel ; deux moitiés en parallèle)
 node tools/render.mjs out/part1.mp4 --from=0    --to=1575 --crf=12 &
 node tools/render.mjs out/part2.mp4 --from=1575 --to=3150 --crf=12 &
 wait
 printf "file 'part1.mp4'\nfile 'part2.mp4'\n" > out/list.txt
-ffmpeg -f concat -safe 0 -i out/list.txt -c copy out/image.mp4
+ffmpeg -f concat -safe 0 -i out/list.txt -c copy out/base.mp4
+
+# 3 bis. passe de finition : les 18 plages en mouvement sont re-rendues avec un flou de mouvement lisse (6 sous-images)
+mkdir -p out/runs
+for k in 0 1 2; do node tools/render_runs.mjs out/runs $k 3 6 & done; wait
+python3 tools/assemble.py out/base.mp4 out/runs out/image.mp4 17
 
 # 4. assemblage
 ffmpeg -i out/image.mp4 -i out/audio/MIX_ME.wav -c:v libx264 -crf 17 -preset slow -pix_fmt yuv420p \
