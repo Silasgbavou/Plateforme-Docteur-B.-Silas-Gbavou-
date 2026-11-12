@@ -73,7 +73,7 @@ export function buildC(ctx) {
   for (const c of contact) { c.rows.forEach(m => m.renderOrder = 12); c.pill.renderOrder = 11; }
   const AV = { s: 0.95 / PWd, x: CX - CWd / 2 + 0.22 + 0.5 };      // vignette-portrait dans la carte (élément partagé plan 07 -> 08)
   // moments de mise en avant des lignes (calés sur la voix : Facebook, WhatsApp, e-mail)
-  const PULSE = [[94.2, 1], [95.5, 2], [96.8, 3]];
+  const PULSE = [[93.75, 1], [94.35, 2], [96.0, 3]];   // calé sur « Facebook », « WhatsApp », « e-mail » dans la voix off
   ctx.cues.rowsIn = 89.1; ctx.cues.pulses = PULSE.map(p => p[0]);
 
   // ---------- HUD ----------

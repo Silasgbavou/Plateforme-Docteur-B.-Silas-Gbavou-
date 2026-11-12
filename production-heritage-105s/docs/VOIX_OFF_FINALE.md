@@ -1,84 +1,36 @@
-# VOIX OFF FINALE — L’Héritage des saints dans la lumière (105 s)
+# VOIX OFF — version adoptée et intégrée
 
-**Statut : texte définitif proposé, prêt pour l’enregistrement ou la génération externe.** Aucune voix n’est incluse dans le film livré : la piste voix sera enregistrée hors pipeline puis synchronisée sur ces repères. Le film est déjà monté sur ces fenêtres (images, légendes, musique, pré-atténuation).
+**Enregistrement utilisé** : fichier fourni par le commanditaire (ElevenLabs, voix « Andy », 73,3 s, mono 44,1 kHz). Il est utilisé tel quel : aucun mot régénéré, aucun mot modifié.
+**Seules opérations** : découpage aux 9 pauses naturelles de l'enregistrement, pose de chaque paragraphe sur la séquence qui l'illustre, traitement de mixage (passe-haut 75 Hz, nettoyage des bas-médiums, présence, désesseur, compression douce).
 
-- Version principale : **180 mots** (cible du brief : 165–195), 18 segments, 75,8 s de parole, 29,2 s de respirations (comptage automatique, débit de 1,8 à 2,9 mots/s selon les segments).
-- Débit visé : 2,4 à 2,7 mots par seconde. Voix posée, chaleureuse, solennelle sans emphase. Registre médium, sourire discret sur les noms propres.
-- Ducking musical prévu : −8 dB sous la parole (attaque 0,25 s, relâchement 0,6 s), déjà appliqué dans `out/audio/MIX_ME_DUCKE.wav`.
-- Marqueurs : `VO_START` / `VO_END` par segment ; `TITLE_REVEAL` 00:08,0 ; `PAGE_TURN` 00:23,75 · 00:25,0 à 00:25,7 (six feuilles) · 00:28,3 · 00:28,56 ; `CTA` 01:28,8.
+## Placement dans le film
 
-## Contrôle doctrinal et éditorial (toutes les formulations viennent du PDF)
+| Paragraphe | Début | Fin | Plan | Texte (enregistrement fourni) |
+|---|---|---|---|---|
+| P1 | 00:09,00 | 00:16,94 | 02 Révélation de la couverture | L’Héritage des saints dans la lumière est un ouvrage doctrinal et prophétique du Docteur Bienvenue Silas Gbavou et du Pasteur Mawoutonam Appolos Gbavou. |
+| P2 | 00:20,00 | 00:28,50 | 03 Ouverture du livre | À travers quinze chapitres répartis en quatre grandes parties, les auteurs nous conduisent dans une étude approfondie des Écritures et des richesses de notre héritage en Jésus-Christ. |
+| P3 | 00:32,30 | 00:41,23 | 04 Lecture pédagogique (pages des parties 1-2) | De la nouvelle naissance à la maturité des fils de Dieu, cet ouvrage explore notre identité spirituelle, les droits des héritiers et le pouvoir accordé aux fils de la lumière. |
+| P4 | 00:47,00 | 00:53,27 | 05 Carte « Partie 3 » en vedette | Il nous introduit ensuite dans le ministère des anges, leurs fonctions, leurs hiérarchies et leur participation au mouvement prophétique. |
+| P5 | 00:53,70 | 01:01,68 | 05 Carte « Partie 4 » en vedette | L’enseignement se poursuit avec les réalités du royaume prophétique, les dimensions de la révélation, les échelles d’ascension, les alliances et les autels. |
+| P6 | 01:02,40 | 01:11,71 | 06 Carrousel : figures, tableau, illustration | Enrichi de schémas explicatifs, de tableaux et d’illustrations, ce livre développe des enseignements bibliques profonds, dans un langage de connaissance, de révélation et de doctrine. |
+| P7 | 01:12,40 | 01:19,60 | 06 → 07 Aube, retour dans la lumière | Plus de 450 pages d’enseignement pour approfondir votre connaissance de Dieu et mieux comprendre les richesses de votre héritage en Christ. |
+| P8 | 01:20,50 | 01:25,72 | 07 Les deux auteurs | L’Héritage des saints dans la lumière, du Docteur Silas Gbavou et du Pasteur Appolos Gbavou. |
+| P9 | 01:30,00 | 01:37,04 | 08 Contacts (mises en avant Facebook, WhatsApp, e-mail synchronisées) | Pour obtenir votre exemplaire, contactez les auteurs sur Facebook, WhatsApp ou par e-mail. |
 
-| Segment | Source dans le PDF | Nature |
-|---|---|---|
-| VO01 | Colossiens 1:12, épigraphe p. 16, p. 19 et p. 452 | **citation verbatim** |
-| VO02 | Titre (p. 1, 2, 452) et noms des auteurs (p. 1, 2, 3, 452) | exact |
-| VO03 | « développé en quinze chapitres », « Fondé sur l’œuvre rédemptrice de Jésus-Christ et l’héritage accordé aux saints » (p. 452) ; 452 pages = pagination du PDF | reprise fidèle |
-| VO04 | Avant-propos p. 16 : « connaissent davantage ce que Dieu leur a donné en Jésus-Christ, comprennent leur position en lui » ; figures, tableaux et encadrés bibliques visibles p. 30, 35, 68 | reprise fidèle |
-| VO05 | Titres des quatre parties, p. 19, 100, 168, 281 | **titres verbatim** |
-| VO06 | Figures et illustrations (index p. 14-15) ; « De la nouvelle naissance au royaume » (figure 8, p. 165) ; « royaume prophétique » (p. 302) | reprise fidèle |
-| VO07 | Notices des auteurs p. 452 : « enseignant de la Parole, auteur, éditeur et scribe prophétique » ; « auteur et écrivain d’ouvrages chrétiens pour l’édification du royaume de Dieu sur la terre » | reprise fidèle |
-| VO08 | Coordonnées p. 3 et p. 452 (affichées à l’écran, non dictées) | invitation neutre |
+Le plan 01 (00:00 à 00:08) reste sans voix : le verset de Colossiens 1:12 s'affiche sur la musique. De 01:37 à 01:45, l'écran des contacts reste lisible sur la résolution musicale.
 
-Aucune promesse commerciale, aucun prix, aucune doctrine absente du PDF.
+## Ajustements visuels faits pour la synchronisation (sans refonte)
 
-## Version principale (avec repères, diction et pauses)
+- **Plan 05** : la voix décrit les parties 3 et 4 (les parties 1 et 2 sont décrites pendant le plan 04). La mise en avant des cartes est donc recalée : carte 3 de 47,6 à 53,4 s, carte 4 de 53,4 à 59,9 s. Les cartes 1 et 2 restent visibles dans la grille. 372 images re-rendues.
+- **Plan 08** : les trois mises en avant de contact tombent sur les mots « Facebook » (93,75 s), « WhatsApp » (94,35 s) et « e-mail » (96,0 s). 141 images re-rendues.
+- Rien d'autre n'est modifié : scènes, pages, portraits, transitions et durée (105,00 s) sont identiques.
 
-Légende : `/` = respiration courte (0,2 s) ; `//` = pause (0,5 s) ; **gras** = appui ; *(…)* = intention.
+## Mixage
 
-| N° | Début | Fin | Plan | Texte | Indications |
-|---|---|---|---|---|---|
-| VO01 | 00:00,8 | 00:08,2 | 01 | « Rendez grâces au Père, / qui vous a rendus **capables** // d’avoir part à l’héritage des saints / dans la **lumière**. » | *(recueilli, lent, presque à mi-voix)* Le mot « lumière » tombe sur 00:08,0, à l’apparition du livre. |
-| VO02 | 00:09,2 | 00:17,4 | 02 | Voici **L’Héritage des saints dans la lumière**, // du Docteur B. Silas Gbavou / et du Pasteur M. Appolos Gbavou. | *(annonce, ton ouvert)* Titre entre 00:09,6 et 00:12,2. Détacher chaque nom ; « B. » et « M. » se disent « bé », « èm ». |
-| VO03a | 00:19,8 | 00:23,2 | 03 | Quatre cent cinquante-deux pages, / quinze chapitres. | *(factuel, posé)* Pendant l’ouverture de la couverture. |
-| VO03b | 00:25,0 | 00:30,0 | 03 | Un enseignement fondé sur l’œuvre rédemptrice de **Jésus-Christ** / et sur l’héritage accordé aux saints. | *(ferme, sans hâte)* Commence sur le feuilletage. |
-| VO04a | 00:32,0 | 00:36,0 | 04 | Chaque page **enseigne** : / figures, tableaux, / Écritures citées et expliquées. | *(pédagogue, clair)* Énumération égale, sans monter. |
-| VO04b | 00:37,6 | 00:43,8 | 04 | Pour connaître davantage ce que Dieu nous a donné en Jésus-Christ, // et comprendre notre position en lui. | *(intérieur, confiant)* |
-| VO05a | 00:45,5 | 00:47,3 | 05 | Quatre parties, / quinze chapitres. | *(net, rythmé)* Synchrone avec le titre à l’écran. |
-| VO05b | 00:48,2 | 00:50,5 | 05 | L’héritage des saints dans la lumière. | Carte 1 en vedette de 00:47,9 à 00:50,6. |
-| VO05c | 00:50,9 | 00:53,5 | 05 | Le pouvoir des fils de la lumière. | Carte 2 de 00:50,6 à 00:53,6. |
-| VO05d | 00:53,9 | 00:56,9 | 05 | Le ministère des anges dans le mouvement prophétique. | Carte 3 de 00:53,6 à 00:56,9. |
-| VO05e | 00:57,2 | 00:59,9 | 05 | Le royaume prophétique et les échelles d’ascension. | Carte 4 de 00:56,9 à 00:59,9. *(légère montée finale)* |
-| VO06a | 01:01,8 | 01:05,8 | 06 | Des schémas pour **voir**. // Des illustrations pour **méditer**. | *(contemplatif)* « voir » sur l’arrêt figure 6 (01:04,0). |
-| VO06b | 01:07,4 | 01:12,8 | 06 | Une doctrine exposée avec ordre, / de la nouvelle naissance // jusqu’au royaume prophétique. | *(ample)* « royaume prophétique » sur la figure 12 (01:11,1). |
-| VO07a | 01:16,8 | 01:21,0 | 07 | Le Docteur B. Silas Gbavou, // enseignant de la Parole et scribe prophétique. | *(chaleureux, respectueux)* |
-| VO07b | 01:21,8 | 01:26,6 | 07 | Le Pasteur M. Appolos Gbavou, // auteur d’ouvrages chrétiens pour l’édification du royaume de Dieu. | *(même poids que 07a : équilibre des deux auteurs)* |
-| VO08a | 01:28,8 | 01:32,2 | 08 | Pour en savoir plus, / contactez les auteurs | *(invitation simple, sans insistance)* |
-| VO08b | 01:34,0 | 01:38,0 | 08 | sur **Facebook**, // par **WhatsApp**, // ou par **e-mail**. | Un mot-clé par mise en avant : 01:34,2 · 01:35,5 · 01:36,8. |
-| VO08c | 01:38,8 | 01:42,2 | 08 | L’Héritage des saints / dans la lumière. | *(conclusif, descendant, laisser résonner)* Puis silence jusqu’à 01:45,0 sur la résolution musicale. |
+- Voix à −16 LUFS, toujours 10 à 13 dB au-dessus de la musique pendant la parole (mesuré paragraphe par paragraphe).
+- Ducking dynamique de −11 dB piloté par l'enveloppe de la voix : anticipation de 180 ms, maintien entre les mots (pas de pompage), retour lent de 0,9 s. La musique remonte dans chaque respiration de plus d'une seconde.
+- Creux dynamique supplémentaire de −4 dB entre 0,9 et 4,5 kHz dans la musique pendant la parole (zone d'intelligibilité).
+- Bruitages atténués de 4 dB sous la voix.
+- Master : −14 LUFS intégrés, crête −1,8 dBFS.
 
-### Prononciations
-
-- **Gbavou** : « g-ba-vou », le *g* et le *b* enchaînés, accent sur « vou ».
-- **Appolos** : « a-po-loss » ; **Silas** : « si-lass ».
-- **B.** et **M.** : lettres dites « bé » et « èm ».
-- **Colossiens 1:12** n’est pas dit (affiché à l’écran).
-- **e-mail** : « i-mèl ». **WhatsApp** : « ouatt-sap ».
-- Liaisons : « rendus‿capables » sans liaison ; « ouvrages‿chrétiens » sans liaison ; « des‿illustrations » avec liaison.
-
-## Version sobre de secours (112 mots)
-
-Même montage, mêmes fenêtres ; à utiliser si la prise principale paraît dense. Les segments supprimés laissent la musique respirer.
-
-| N° | Début | Fin | Texte |
-|---|---|---|---|
-| S01 | 00:00,8 | 00:08,2 | « Rendez grâces au Père, qui vous a rendus capables d’avoir part à l’héritage des saints dans la lumière. » |
-| S02 | 00:09,2 | 00:17,4 | L’Héritage des saints dans la lumière, du Docteur B. Silas Gbavou et du Pasteur M. Appolos Gbavou. |
-| S03 | 00:25,0 | 00:30,0 | Un enseignement fondé sur l’œuvre rédemptrice de Jésus-Christ. |
-| S04 | 00:37,6 | 00:43,8 | Pour connaître davantage ce que Dieu nous a donné en Jésus-Christ. |
-| S05a | 00:45,5 | 00:47,3 | Quatre parties, quinze chapitres. |
-| S05b | 00:48,2 | 00:50,5 | L’héritage des saints dans la lumière. |
-| S05c | 00:50,9 | 00:53,5 | Le pouvoir des fils de la lumière. |
-| S05d | 00:53,9 | 00:56,9 | Le ministère des anges dans le mouvement prophétique. |
-| S05e | 00:57,2 | 00:59,9 | Le royaume prophétique et les échelles d’ascension. |
-| S07 | 01:16,8 | 01:26,6 | Deux auteurs : le Docteur B. Silas Gbavou et le Pasteur M. Appolos Gbavou. |
-| S08 | 01:28,8 | 01:32,2 | Pour en savoir plus, contactez les auteurs. |
-| S09 | 01:38,8 | 01:42,2 | L’Héritage des saints dans la lumière. |
-
-## Synchronisation de la voix une fois enregistrée
-
-1. Exporter la voix en WAV 48 kHz mono, sans musique, sans traitement lourd.
-2. Placer chaque segment sur son repère `Début` (tolérance ±0,2 s ; priorité aux repères en gras du tableau).
-3. Mixer avec `out/audio/MIX_ME_DUCKE.wav` (déjà atténué sous ces fenêtres) ou avec les stems et un sidechain −6 à −10 dB.
-4. Viser −14 LUFS intégrés, crête vraie ≤ −1,5 dBTP ; voix environ 8 à 10 dB au-dessus de la musique.
-5. Sous-titres : `docs/SOUS_TITRES_FR.srt` (à réajuster de quelques dixièmes selon la prise réelle).
+Sous-titres synchronisés sur ce placement : `docs/SOUS_TITRES_FR.srt` (22 cartons, deux lignes au maximum).

@@ -4,21 +4,21 @@ Fichier contrôlé : `out/HERITAGE_105s_SANS_VOIX.mp4`. Outils : `tools/qc.py`, 
 
 **Limite du contrôle** : je vois des images fixes et des planches, je ne visionne pas le film en mouvement et je n’entends pas le son. Le rythme réel, le ressenti des mouvements et la musique doivent être validés par un visionnage humain.
 
-## 1. Mesures du fichier livré
+## 1. Mesures du fichier livré (`out/HERITAGE_105s_FINAL.mp4`, version avec voix)
 
 ```
-fichier        : out/HERITAGE_105s_SANS_VOIX.mp4 (80.7 Mo)
+fichier        : out/HERITAGE_105s_FINAL.mp4 (104.7 Mo)
 vidéo          : h264 High 1920x1080 pix yuv420p SAR None DAR None
 cadence        : 30/1 | images lues : 3150 | durée vidéo : 105.000000 s | durée conteneur : 105.000000
 couleur        : tv bt709 bt709 bt709
-audio          : aac 48000 Hz 2 canaux 268187 bit/s durée 105.000000
-sonie          : I: -13.8 LUFS | LRA: 6.1 LU | Peak: -1.8 dBFS
+audio          : aac 48000 Hz 2 canaux 268824 bit/s durée 105.000000
+sonie          : I: -14.0 LUFS | LRA: 2.9 LU | Peak: -1.6 dBFS
 silences >0,5s : aucun
 images noires  : aucune
 images figées  : aucune (>0,5 s)
 ```
 
-SAR/DAR non inscrits dans le conteneur : pixels carrés, 1920 × 1080 = 16:9.
+Pixels carrés, 1920 × 1080 = 16:9. Voix 10 à 13 dB au-dessus de la musique pendant chaque paragraphe (mesure dans `VOIX_OFF_FINALE.md`).
 
 ## 2. Recette du dossier (`08_CONTROLE_QUALITE/CHECKLIST.md`)
 
@@ -31,7 +31,7 @@ SAR/DAR non inscrits dans le conteneur : pixels carrés, 1920 × 1080 = 16:9.
 | Pages lisibles pendant les pauses pédagogiques, pas de flou sur le texte | **Conforme** | 1 seule sous-image (aucun flou) pendant toutes les plages de lecture ; corps de texte d’environ 25 px au plan 04 |
 | Deux portraits et deux jeux de contacts contrôlés chiffre par chiffre | **Conforme** | contrôle automatique contre p. 3 et p. 452 + relecture visuelle de l’image finale |
 | Transitions motivées, profondeur 3D cohérente, pas de clipart ni templates | **Conforme sur images fixes** | à confirmer au visionnage |
-| Mix voix intelligible, musique originale, droits vérifiés | **Partiel** | pas de voix dans cette version ; musique originale synthétisée ; droits : voir `DROITS_ET_LICENCES.md`, trois confirmations demandées aux auteurs |
+| Mix voix intelligible, musique originale, droits vérifiés | **Conforme**, droits à confirmer | voix fournie au premier plan, ducking dynamique ; musique originale (instruments FluidR3, licence MIT) ; droits : voir `DROITS_ET_LICENCES.md` |
 | Fichiers sources, polices autorisées et projets livrés | **Conforme** | projet complet dans `film/` et `tools/` ; polices OFL |
 | Contrôle plan par plan, sous-titres et version sans voix | **Conforme** | tableau ci-dessous ; `SOUS_TITRES_FR.srt` ; le film livré est la version sans voix |
 
@@ -63,8 +63,8 @@ paires d'images strictement identiques : 0
 
 ## 5. Défauts connus et réserves
 
-1. **Voix off absente** : conforme au dossier (voix enregistrée ailleurs). Le film est monté sur les fenêtres de parole ; sans voix, certaines plages paraîtront longues.
-2. **Musique synthétique** : deuxième version, publicitaire et rythmée (batterie, basse synthé, arpèges, montées et impacts), écrite après votre retour. Timbres de synthèse calculés, pas d’instruments réels ni de banque de sons. **Je ne peux pas l’écouter** : seul le niveau est mesuré. Si elle ne vous convainc pas à l’oreille, il faudra une musique produite avec un outil ou un compositeur dédié.
+1. **Voix off** : enregistrement fourni intégré tel quel (aucun mot modifié), découpé à ses pauses et posé séquence par séquence.
+2. **Musique** : version 3, instruments échantillonnés General MIDI. Non écoutée par moi : seuls ses niveaux et son spectre sont mesurés.
 3. **Rendu logiciel** : pas de carte graphique dans cet environnement. Pas de profondeur de champ optique, pas de réflexions par lancer de rayons ; les reflets au sol sont des clones miroir. Le rendu est propre mais n’atteint pas un rendu Blender Cycles.
 4. **Portraits** : sources de 1536 px où les personnes occupent une partie du cadre ; affichés à une taille proche de leur définition native (aucun agrandissement par IA). Pas de détourage.
 5. **Dos du livre** : créé (absent du PDF), à valider.

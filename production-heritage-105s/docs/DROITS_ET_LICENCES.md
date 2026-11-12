@@ -9,7 +9,9 @@
 | 17 autres références visuelles (fonds, verre, cartes, « hello », maquette) | Fournies comme inspiration ; plusieurs sont des images de stock, certaines avec filigrane | **Aucune n’apparaît dans le film.** Elles ont servi de grammaire de formes et de lumière | Sans objet |
 | Liens Pinterest | Fournis | Non consultés (accès réseau refusé) | Sans objet |
 | Décors, panneaux, cartes, animations | Créés par le code du projet | Tout le film | Création originale pour ce projet |
-| Musique et effets sonores | Synthétisés par `tools/audio/compose.py` | Bande son | Création originale, aucun échantillon tiers |
+| Voix off | Enregistrement fourni par le commanditaire (ElevenLabs, voix « Andy ») | Narration | Selon les conditions du compte ElevenLabs du commanditaire (usage commercial sur offre payante) |
+| Musique v3 | Composée par `tools/audio/music_v3.py`, jouée avec la banque FluidR3_GM | Bande son | Composition originale ; banque d’instruments FluidR3_GM sous licence MIT |
+| Bruitages et sons d’interface | Synthétisés par `tools/audio/compose.py` | Bande son | Création originale |
 | three.js r187 | npm | Moteur 3D (`film/vendor`) | Licence MIT (fichier `THREE_LICENSE` joint) |
 | Police Inter | Google Fonts | Titres et libellés | SIL Open Font License 1.1 |
 | Police Lora | Google Fonts | Citations, notices | SIL Open Font License 1.1 |

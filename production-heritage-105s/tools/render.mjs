@@ -5,6 +5,7 @@ import { openFilm } from './probe.mjs';
 const args = Object.fromEntries(process.argv.slice(3).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? '1']; }));
 const out = process.argv[2]; const from = +(args.from ?? 0), to = +(args.to ?? 3150), step = +(args.step ?? 1), scale = args.scale ?? '1', crf = args.crf ?? '14', size = args.size ?? '1920x1080';
 const samples = args.samples && args.samples !== 'auto' ? +args.samples : null;
+const fine = args.fine ? +args.fine : 0;   // --fine=6 : 6 sous-images sur les images en mouvement, 1 sinon
 const { browser, page, server } = await openFilm('index.html' + (scale !== '1' ? `?scale=${scale}` : ''));
 const fps = 30 / step;
 const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'png', '-i', '-',
@@ -12,7 +13,7 @@ const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-fr
   '-color_range', 'tv', '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-movflags', '+faststart', out], { stdio: ['pipe', 'inherit', 'inherit'] });
 const t0 = Date.now(); let n = 0;
 for (let f = from; f < to; f += step) {
-  await page.evaluate(([f, s]) => window.renderFrame(f, s), [f, samples]);
+  await page.evaluate(([f, s, fine]) => window.renderFrame(f, fine ? (window.blurSamples(f / 30) > 1 ? fine : 1) : s), [f, samples, fine]);
   const buf = await page.screenshot({ type: 'png', clip: { x: 0, y: 0, width: 1920, height: 1080 } });
   if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once('drain', r));
   n++; if (n % 50 === 0) console.log(`${out.split('/').pop()} image ${f} (${n}/${Math.ceil((to - from) / step)}) ${((Date.now() - t0) / n).toFixed(0)} ms/image`);

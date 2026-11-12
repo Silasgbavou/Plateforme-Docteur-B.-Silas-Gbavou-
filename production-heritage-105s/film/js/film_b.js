@@ -141,8 +141,8 @@ export function buildB(ctx) {
     const cx = (i % 2 === 0 ? -1 : 1) * 3.95, cy = 0.3 + (i < 2 ? 1 : -1) * 2.2;
     return { g, face, sh, edge, cx, cy };
   });
-  const FOCUS = [[47.9, 50.6], [50.6, 53.6], [53.6, 56.9], [56.9, 59.9]];     // durées proportionnelles à la longueur des titres dits par la voix     // un temps par partie (calé sur la voix)
-  ctx.cues.partFocus = FOCUS.map(f => f[0]);
+  const FOCUS = [null, null, [47.6, 53.4], [53.4, 59.9]];   // calé sur la voix off : parties 3 (anges) et 4 (royaume prophétique) ; parties 1 et 2 portées par le plan 04     // durées proportionnelles à la longueur des titres dits par la voix     // un temps par partie (calé sur la voix)
+  ctx.cues.partFocus = FOCUS.filter(Boolean).map(f => f[0]);
   const head5 = el(`left:0; top:468px; width:1920px; text-align:center; font-weight:800; font-size:86px; letter-spacing:-0.03em; color:#fff;`, `Quatre parties. <span style="color:${TOK.gold}">Quinze chapitres.</span>`);
   const head5w = splitWords(head5);
 
@@ -212,7 +212,7 @@ export function buildB(ctx) {
     // ----- Plan 05
     const on5 = t > 45.0 && t < 61.6;
     let fi = -1, fa = 0;        // carte en vedette et intensité
-    FOCUS.forEach(([a, b], i) => { const u = Math.min(E.io3(seg(t, a, a + 0.8)), 1 - E.io3(seg(t, b - 0.1, b + 0.7))); if (u > fa) { fa = u; fi = i; } });
+    FOCUS.forEach((f, i) => { if (!f) return; const [a, b] = f; const u = Math.min(E.io3(seg(t, a, a + 0.8)), 1 - E.io3(seg(t, b - 0.1, b + 0.7))); if (u > fa) { fa = u; fi = i; } });
     cards.forEach((c, i) => {
       c.g.visible = on5; if (!on5) return;
       const tin = seg(t, 46.7 + i * 0.12, 47.7 + i * 0.12); const e = E.o5(tin); const sp = spring((t - 46.7 - i * 0.12), 1.6, 0.8);
@@ -251,7 +251,7 @@ export function buildB(ctx) {
   const OV5 = [0, 0.3, 19.3, 0, 0.3, 0, 40];
   const fPose = (i) => { const c = cards[i]; return [c.cx * 0.9, c.cy * 0.92 + 0.02, 12.3, c.cx, c.cy, 0, 40]; };
   const K5 = [[45.6, [0, 0.4, 20.5, 0, 0.3, 0, 40]], [47.6, OV5, E.o3], [47.9, OV5, E.lin]];
-  FOCUS.forEach(([a, b], i) => { const p = fPose(i); K5.push([a + 0.9, p, E.io5]); const q = p.slice(); q[2] -= 0.45; K5.push([b, q, E.lin]); });
+  FOCUS.forEach((f, i) => { if (!f) return; const [a, b] = f; const p = fPose(i); K5.push([a + 0.9, p, E.io5]); const q = p.slice(); q[2] -= 0.45; K5.push([b, q, E.lin]); });
   const F4END = K5[K5.length - 1][1].slice(); K5.push([60.0, F4END, E.lin]);
   const zf = ZC + RR;      // z de la page en vedette
   const ringStop = (h, d) => [1.05, 0.3 + h.cy * 0.95, zf + d, 0.9, 0.3 + h.cy * 0.95, zf, 50];   // page à gauche, légende à droite
@@ -269,7 +269,7 @@ export function buildB(ctx) {
     if (t < 32.7 || (t > 44.3 && t < 47.2) || (t > 60.0 && t < 63.6) || (t > 66.2 && t < 67.9) || t > 73.4) return 3;
     for (const [a, b] of HOLD) if (t >= a - 0.1 && t <= b + 0.02) return 1;
     for (const h of HI6) if (t >= h.a - 0.1 && t <= h.b + 0.02) return 1;
-    if (t > 47.6 && t < 60.0) { for (const [a, b] of FOCUS) if (t > a + 0.95 && t < b + 0.02) return 1; return 2; }
+    if (t > 47.6 && t < 60.0) { for (const f of FOCUS) if (f && t > f[0] + 0.95 && t < f[1] + 0.02) return 1; return 2; }
     if (t >= 63.6 && t <= 64.0) return 2;
     return 2;
   }

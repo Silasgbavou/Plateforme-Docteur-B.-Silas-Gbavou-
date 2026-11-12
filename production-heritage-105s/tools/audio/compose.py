@@ -287,10 +287,10 @@ CUES = {
     'page_turns': [23.75] + [round(25.0 + i * 0.14, 2) for i in range(6)] + [28.3, 28.56],
     'push_page': 30.2, 'night_in': 31.0,
     'panel_moves': [32.75, 36.9, 40.7, 44.3], 'highlights': [34.65, 38.45, 42.05],
-    'cards_in': [round(46.7 + i * 0.12, 2) for i in range(4)], 'part_focus': [47.9, 50.6, 53.6, 56.9],
+    'cards_in': [round(46.7 + i * 0.12, 2) for i in range(4)], 'part_focus': [47.6, 53.4],
     'push_ring': 60.0, 'ring_spins': [66.2, 70.1], 'ring_stops': [64.05, 67.95, 71.1], 'dawn': 73.5, 'light_in': 76.0,
     'portraits': [76.45, 78.0], 'morph': 86.7, 'books_land': [88.55, 88.9],
-    'rows': [round(88.75 + i * 0.36 + k * 0.12, 2) for i in range(2) for k in range(4)], 'pulses': [94.2, 95.5, 96.8],
+    'rows': [round(88.75 + i * 0.36 + k * 0.12, 2) for i in range(2) for k in range(4)], 'pulses': [93.75, 94.35, 96.0],
 }
 
 
@@ -604,7 +604,7 @@ for a, b in VO:
     duck = np.minimum(duck, 1 - (1 - 10 ** (-8 / 20)) * np.clip((t - (a - 0.25)) / 0.25, 0, 1) * np.clip(((b + 0.6) - t) / 0.6, 0, 1))
 mix_d = limit((music * duck[:, None]) + sfx * (0.6 + 0.4 * duck[:, None]))
 
-for name, x in (('STEM_MUSIQUE', limit(music, 0.78)), ('STEM_SFX', sfx), ('MIX_ME', mix_l), ('MIX_ME_DUCKE', mix_d)):
+for name, x in (('STEM_SFX', sfx),):      # v3 : la musique vient de music_v3.py, le mixage final de mix_final.py
     sf.write(os.path.join(OUT, name + '.wav'), np.clip(x, -1, 1), SR, subtype='PCM_24')
 json.dump({'sr': SR, 'bars': [round(x, 4) for x in BAR_T], 'bar_len': [round(x, 4) for x in BAR_L], 'cues': CUES, 'vo_windows': VO, 'duck_db': -8}, open(os.path.join(OUT, 'cues.json'), 'w'), indent=1)
 print('ok', OUT)

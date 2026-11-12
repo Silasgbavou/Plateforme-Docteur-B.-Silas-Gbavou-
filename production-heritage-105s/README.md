@@ -7,8 +7,9 @@ Auteurs de l’ouvrage : Docteur B. Silas Gbavou et Pasteur M. Appolos Gbavou.
 
 | Fichier | Contenu |
 |---|---|
-| `out/HERITAGE_105s_SANS_VOIX.mp4` | **Le film complet, 105 s, musique originale et effets, sans voix** (H.264 1080p30, AAC 48 kHz) |
-| `out/audio/*.flac` | Mixage sans voix, **mixage pré-atténué sous la voix** (à utiliser pour poser la voix), stem musique, stem effets (48 kHz, 24 bits, sans perte) et `cues.json` |
+| `out/HERITAGE_105s_FINAL.mp4` | **Film final avec la voix off fournie**, musique v3 et bruitages (H.264 1080p30, AAC 48 kHz, −14 LUFS) |
+| `out/HERITAGE_105s_SANS_VOIX.mp4` | Même film, musique et bruitages sans voix (version M&E) |
+| `out/audio/*.flac` | Mixage final, M&E, stems voix / musique / musique duckée / bruitages (48 kHz, 24 bits) ; `placement_voix.json` |
 | `out/controle/` | Planches-contact et images de contrôle du rendu final |
 | `docs/01_AUDIT_PDF_ET_CONFORMITE.md` | Audit du PDF avec preuves paginées, pages retenues, conformité |
 | `docs/02_TABLEAU_DES_PLANS.md` + `PLAN_PAR_PLAN_REALISE.csv` | Les huit plans : timecodes, caméra, focales, couches, images clés, transitions, audio, recette |
@@ -17,7 +18,7 @@ Auteurs de l’ouvrage : Docteur B. Silas Gbavou et Pasteur M. Appolos Gbavou.
 | `docs/RAPPORT_QC.md` | Contrôle qualité mesuré, point par point |
 | `docs/DROITS_ET_LICENCES.md` | Inventaire des droits |
 
-**Ce qui n’est pas livré, et pourquoi** : la version avec voix (la voix doit être enregistrée ailleurs, comme prévu au dossier) ; un projet Blender, After Effects ou Premiere (ces logiciels ne sont pas disponibles dans cet environnement : le projet exécutable est celui décrit ci-dessous) ; un master ProRes (commande fournie plus bas) ; l’analyse des quatre liens Pinterest (accès réseau refusé).
+**Ce qui n’est pas livré, et pourquoi** : un projet Blender, After Effects ou Premiere (ces logiciels ne sont pas disponibles dans cet environnement : le projet exécutable est celui décrit ci-dessous) ; un master ProRes (commande fournie plus bas) ; l’analyse des quatre liens Pinterest (accès réseau refusé).
 
 ## Le projet exécutable
 
@@ -58,8 +59,10 @@ Prérequis : Node 22 avec Playwright et son Chromium, ffmpeg, Python 3 avec `pym
 python3 tools/extract_assets.py source/OUVRAGE_SOURCE_INTEGRAL.pdf source/02_REFERENCES_VISUELLES
 python3 tools/verify_texts.py  source/OUVRAGE_SOURCE_INTEGRAL.pdf
 
-# 2. audio
-python3 tools/audio/compose.py
+# 2. audio : bruitages, musique v3 (FluidSynth + banque FluidR3_GM), mixage avec la voix fournie
+python3 tools/audio/compose.py          # bruitages et sons d'interface (STEM_SFX)
+python3 tools/audio/music_v3.py         # musique (STEM_MUSIQUE)
+python3 tools/audio/mix_final.py source/VOIX_OFF.mp3
 
 # 3. image de base (environ 1,3 s par image en rendu logiciel ; deux moitiés en parallèle)
 node tools/render.mjs out/part1.mp4 --from=0    --to=1575 --crf=12 &

@@ -1,6 +1,6 @@
-# Le PDF source complet et les masters lourds ne sont pas versés dans le dépôt
 source/
 out/audio/*.wav
+out/audio/**/*.wav
 out/frames/
 node_modules/
 *.log
