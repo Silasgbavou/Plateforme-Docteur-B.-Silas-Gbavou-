@@ -23,13 +23,15 @@ SECTIONS = [  # début, fin, mesures (nombre de temps par mesure), accords (un p
     (45.0, 61.0, [4, 4, 4, 4, 4, 4], ['Dmaj9', 'Bm9', 'Gmaj9', 'A13sus', 'Em9|F#m7', 'Gmaj9|A13sus'], 'grooveB'),
     (61.0, 76.0, [4, 4, 4, 4, 4, 2], ['Bm9', 'Gmaj9', 'Em9', 'Dmaj9/F#', 'Gmaj9', 'A13sus'], 'break'),
     (76.0, 88.0, [4, 4, 4, 4, 2], ['Dmaj9', 'Gmaj9', 'Bm9', 'Gmaj9|A13sus', 'A7sus'], 'grooveB'),
-    (88.0, 101.3333, [4, 4, 4, 4, 4], ['Gmaj9', 'A13sus', 'Bm9|A/C#', 'Gmaj9|A13sus', 'Em9|A13sus'], 'outro'),
+    (88.0, 101.3333, [4, 4, 4, 4, 4], ['Am11', 'Am11', 'Em11|G13', 'Cmaj9|Fmaj9', 'Dm9|G13sus'], 'outro'),   # réharmonisé sur la mélodie chantée de « Pour obtenir votre exemplaire » (la mineur)
 ]
 FINAL_T = 101.3333
 VOICING = {  # basse, main droite (voicings sans fondamentale, couleur « haut de gamme »)
     'Dmaj9': (38, [54, 57, 61, 64]), 'Dmaj9/F#': (42, [57, 61, 64, 66]), 'Bm9': (35, [50, 54, 57, 61]), 'Gmaj9': (31, [54, 57, 59, 62]),
     'A13sus': (33, [55, 59, 62, 66]), 'A/C#': (37, [52, 57, 59, 64]), 'Em9': (40, [54, 55, 59, 62]), 'F#m7': (42, [52, 57, 61, 64]),
     'A7sus': (33, [55, 57, 62, 64]), 'D69': (26, [54, 59, 64, 66, 69, 76]),
+    'Am11': (33, [55, 59, 60, 64]), 'Em11': (40, [54, 57, 59, 62]), 'Fmaj9': (41, [52, 55, 57, 60]), 'G13': (43, [53, 57, 59, 64]), 'Cmaj9': (36, [52, 55, 59, 62]),
+    'Dm9': (38, [53, 57, 60, 64]), 'G13sus': (31, [53, 57, 60, 64]), 'C69': (36, [52, 57, 62, 64, 67, 76]),
 }
 BARS = []  # (t0, nbeats, beat_len, [(beat_start, beat_len, chord)], style, section_index, bar_index_in_section, last_in_section)
 for si, (a, b, meters, chords, style) in enumerate(SECTIONS):
@@ -88,17 +90,17 @@ for B in BARS:
             for (pb, pl, iv, vv) in pat:
                 if pb < cl: note('bass', t0 + pb * bl, pl * bl, bass + iv, vv)
 # thème au piano : introduction (sans voix) et conclusion (après la voix)
-for (b0, vel, octv) in ((0, 64, -12), (BARS.index(next(x for x in BARS if x['si'] == 7)) + 3, 72, -12)):
+for (b0, vel, octv, shift) in ((0, 64, -12, 0), (BARS.index(next(x for x in BARS if x['si'] == 7)) + 3, 72, -14, 1.5)):   # conclusion : thème en do majeur, après le dernier mot
     B0 = BARS[b0]; bl = B0['bl']
     for (bb, ln, n) in THEME:
         if b0 == 0 and bb >= 12: continue
-        tt = B0['t'] + bb * bl
+        tt = B0['t'] + (bb + shift) * bl
         if tt < FINAL_T - 0.05: note('piano', tt, ln * bl, n + octv, vel)
 # accord final 6/9
-bass, rh = VOICING['D69']
+bass, rh = VOICING['C69']
 for k, n in enumerate(rh): note('piano', FINAL_T + 0.035 * k, 3.6, n, 72 - 2 * k)
 for n in rh[:4]: note('pad', FINAL_T, 3.6, n, 56); note('strings', FINAL_T, 3.4, n + 12, 56)
-note('bass', FINAL_T, 3.4, 38, 92); note('bells', FINAL_T + 0.02, 3.4, 86, 50); note('bells', FINAL_T + 0.2, 3.2, 90, 44)
+note('bass', FINAL_T, 3.4, 36, 92); note('bells', FINAL_T + 0.02, 3.4, 84, 50); note('bells', FINAL_T + 0.2, 3.2, 88, 44)
 
 # ------------------------------------------------------------------ batterie (GM canal 10)
 K, SN, CL, SS, HH, OH, CR, TB, SH, T1, T2, T3, RD = 36, 38, 39, 37, 42, 46, 49, 54, 82, 50, 47, 45, 51
@@ -147,6 +149,7 @@ for tc in (8.0, 19.0, 45.0, 76.0, 88.0, FINAL_T): note('drums', tc, 2.0, CR, 104
 note('drums', FINAL_T, 0.1, K, 120)
 
 # ------------------------------------------------------------------ rendu FluidSynth (un fichier par instrument)
+TUNE_CENTS = 42   # justesse mesurée de la voix sur sa phrase chantée (+42 cents par rapport au la 440 Hz)
 PROG = {'piano': 0, 'rhodes': 4, 'pad': 89, 'strings': 49, 'bass': 33, 'drums': None, 'bells': 11}
 
 
@@ -154,6 +157,7 @@ def write_mid(stem, path):
     mid = mido.MidiFile(ticks_per_beat=480); tr = mido.MidiTrack(); mid.tracks.append(tr)
     tr.append(mido.MetaMessage('set_tempo', tempo=500000)); ch = 9 if stem == 'drums' else 0
     if PROG[stem] is not None: tr.append(mido.Message('program_change', program=PROG[stem], channel=ch, time=0))
+    if stem != 'drums': tr.append(mido.Message('pitchwheel', pitch=int(round(TUNE_CENTS / 200 * 8192)), channel=ch, time=0))   # accord fin sur la voix
     tr.append(mido.Message('control_change', control=91, value=0, channel=ch, time=0)); tr.append(mido.Message('control_change', control=93, value=0, channel=ch, time=0))
     if stem == 'piano': tr.append(mido.Message('control_change', control=64, value=0, channel=ch, time=0))
     msgs = []

@@ -27,20 +27,24 @@ PARAS = [
     ('P4', 27.47, 33.75, 47.00, "Il nous introduit ensuite dans le ministère des anges, leurs fonctions, leurs hiérarchies et leur participation au mouvement prophétique."),
     ('P5', 34.18, 42.16, 53.70, "L’enseignement se poursuit avec les réalités du royaume prophétique, les dimensions de la révélation, les échelles d’ascension, les alliances et les autels."),
     ('P6', 42.69, 52.00, 62.40, "Enrichi de schémas explicatifs, de tableaux et d’illustrations, ce livre développe des enseignements bibliques profonds, dans un langage de connaissance, de révélation et de doctrine."),
-    ('P7', 53.07, 60.26, 72.40, "Plus de 450 pages d’enseignement pour approfondir votre connaissance de Dieu et mieux comprendre les richesses de votre héritage en Christ."),
-    ('P8', 60.64, 65.86, 80.50, "L’Héritage des saints dans la lumière, du Docteur Silas Gbavou et du Pasteur Appolos Gbavou."),
+    ('P7', 53.07, 60.26, 72.75, "Plus de 450 pages d’enseignement pour approfondir votre connaissance de Dieu et mieux comprendre les richesses de votre héritage en Christ."),
+    ('P8', 60.64, 65.86, 80.70, "L’Héritage des saints dans la lumière, du Docteur Silas Gbavou et du Pasteur Appolos Gbavou."),
     ('P9', 66.29, 73.33, 90.00, "Pour obtenir votre exemplaire, contactez les auteurs sur Facebook, WhatsApp ou par e-mail."),
 ]
 # début de parole exact (premier dépassement de -40 dBFS après le point de coupe)
 def onset(a, b):
     s = vo[int(a * SR):int(b * SR)]; e = 20 * np.log10(uniform_filter1d(np.abs(s), int(0.005 * SR)) + 1e-9)
     i = np.argmax(e > -40); return a + i / SR
+# rires de l'enregistrement (dans les pauses) : réintégrés avec la phrase qu'ils précèdent, à leur distance d'origine
+LAUGH = {'P3': 17.30, 'P7': 52.33}
 voice = np.zeros(N); placed = []
 for (k, a, b, tgt, txt) in PARAS:
     o = onset(max(0, a - 0.2), b)
-    s0, s1 = max(0, o - 0.06), min(len(vo) / SR, b + 0.25)
+    s0, s1 = LAUGH.get(k, max(0, o - 0.06)), min(len(vo) / SR, b + 0.25)
     seg = vo[int(s0 * SR):int(s1 * SR)].copy(); fi, fo = int(0.04 * SR), int(0.12 * SR)
     seg[:fi] *= np.linspace(0, 1, fi); seg[-fo:] *= np.linspace(1, 0, fo) ** 2
+    if k in LAUGH:                                                  # rire légèrement remonté (+3 dB) pour rester audible sous la musique
+        nl = int((o - 0.33 - s0) * SR); g = np.ones(len(seg)); g[:nl] = 10 ** (3 / 20); g = np.convolve(g, np.ones(480) / 480, 'same'); seg *= g
     i = int((tgt - (o - s0)) * SR); voice[i:i + len(seg)] += seg[:N - i]
     placed.append(dict(id=k, debut=round(tgt, 2), fin=round(tgt + (b - o), 2), texte=txt))
 

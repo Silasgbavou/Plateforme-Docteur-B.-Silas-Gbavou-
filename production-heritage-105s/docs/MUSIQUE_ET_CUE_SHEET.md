@@ -11,7 +11,8 @@ La génération par ElevenLabs Music a été tentée : elle a échoué faute de 
 
 ## Écriture
 
-- **Ré majeur, ~90 BPM**, accords étendus : Dmaj9, Bm9, Gmaj9, A13sus4, Em9, F♯m7, Dmaj9/F♯, A/C♯, accord final D6/9.
+- **Ré majeur, ~90 BPM**, accords étendus : Dmaj9, Bm9, Gmaj9, A13sus4, Em9, F♯m7, Dmaj9/F♯, A/C♯ ; section finale en la mineur (Am11, Em11, G13, Cmaj9, Fmaj9, Dm9) et accord final C6/9.
+- **Accordée à +42 cents** sur la justesse mesurée de la voix.
 - **Instruments** : piano à queue (accompagnement syncopé, thème en ouverture et en conclusion), piano électrique Rhodes (passages calmes), basse électrique aux doigts, batterie complète (grosse caisse avec couche sub moderne, caisse claire et clap, charleston, tambourin, shaker, toms, cymbales), nappes chaudes, cordes lentes, cloches sur l’accord final.
 - **Production** : compression parallèle de la batterie, sidechain des nappes et de la basse sur la grosse caisse, réverbération de salle, élargissement stéréo, montées, cymbales inversées et impacts sur les transitions.
 
@@ -24,7 +25,7 @@ La génération par ElevenLabs Music a été tentée : elle a échoué faute de 
 | 05 | 45–61 s | Plein régime (charleston en doubles croches, charleston ouvert, tambourin), cordes |
 | 06 | 61–76 s | Respiration (Rhodes, piano) puis reprise progressive, montée vers la lumière |
 | 07 | 76–88 s | Impact, groove complet, cordes |
-| 08 | 88–105 s | Final, thème au piano après la voix, accord D6/9 à 101,33 s, résonance jusqu’à 105 s |
+| 08 | 88–105 s | Réharmonisé sur la phrase chantée de la voix (la mineur) : Am11, Em11–G13, Cmaj9–Fmaj9, Dm9–G13sus4 ; thème au piano après le dernier mot ; accord final C6/9 à 101,33 s |
 
 ## Fichiers (`out/audio/`, 48 kHz, 24 bits, FLAC sans perte)
 
