@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>L’Héritage des saints dans la lumière — film 105 s</title>
+<style>
+  @font-face { font-family: 'Inter'; src: url('fonts/Inter-normal.woff2') format('woff2'); font-weight: 300 800; font-style: normal; }
+  @font-face { font-family: 'Lora'; src: url('fonts/Lora-normal.woff2') format('woff2'); font-weight: 400 700; font-style: normal; }
+  @font-face { font-family: 'Lora'; src: url('fonts/Lora-italic.woff2') format('woff2'); font-weight: 400 700; font-style: italic; }
+  @font-face { font-family: 'Cinzel'; src: url('fonts/Cinzel-normal.woff2') format('woff2'); font-weight: 400 900; font-style: normal; }
+  html, body { margin: 0; background: #000; overflow: hidden; }
+  #stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: #fff; }
+  #gl { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: block; }
+  #hud { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; font-family: 'Inter', sans-serif; color: #16264a; }
+  #hud * { box-sizing: border-box; }
+  .abs { position: absolute; will-change: auto; }
+  .mask { overflow: hidden; display: inline-block; vertical-align: bottom; }
+  .w { display: inline-block; white-space: pre; }
+  #preview { position: fixed; left: 12px; bottom: 10px; font: 12px/1.4 'JetBrains Mono', monospace; color: #fff; background: rgba(0,0,0,.55); padding: 4px 8px; border-radius: 6px; z-index: 99; }
+  body.render #preview { display: none; }
+</style>
+<script type="importmap">{ "imports": { "three": "./vendor/three.module.js", "three/addons/": "./vendor/addons/" } }</script>
+</head>
+<body>
+<div id="stage"><canvas id="gl" width="1920" height="1080"></canvas><div id="hud"></div></div>
+<div id="preview">chargement…</div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

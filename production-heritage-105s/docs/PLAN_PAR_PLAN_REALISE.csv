@@ -1,0 +1,9 @@
+ID,Début,Fin,Durée s,Images,Séquence,Focale mm,Caméra,Pages PDF,Lecture stable,Transition sortie,Voix off,Sound design
+01,00:00,00:08,8,0-239,Prologue lumineux,30-40,Dolly-in Z 64>15,"16, 19, 452 (verset)",2.6-6.5,Continuité spatiale,VO01,Air lumineux; souffle montant
+02,00:08,00:19,11,240-569,Révélation couverture,40-50,Fin de dolly; travelling droit; orbite lente,"1, 452",16.4-18.2,Continuité de mouvement,VO02,Impact doux; balayage
+03,00:19,00:31,12,570-929,Ouverture physique,45-47,Grue; orbite 18°; plongée finale,2 à 20,26.5-28.3,Push Z dans le papier (raccord blanc),VO03a VO03b,Pose; ouverture; 9 pages
+04,00:31,00:45,14,930-1349,Lecture pédagogique,40-50,Recul; 3 gros plans; zoom lent,"29, 30, 35, 68",34.6-36.9; 38.4-40.7; 42.0-44.15,Panneaux écartés; push Z,VO04a VO04b,Souffles; molette; 3 tintements
+05,00:45,01:01,16,1350-1829,Architecture doctrinale,40,Glissement Z; 4 approches; traversée,"19, 100, 168, 281, 4-13",4 vedettes de 2.7 à 3.3 s,Traversée de la grille,VO05a-e,4 tics; souffles; tintements
+06,01:01,01:16,15,1830-2279,Immersion dans les pages,45-50,3 arrêts sur carrousel,"33, 141, 142, 184, 221, 282, 287, 302, 351, 417",64.0-66.2; 67.9-70.1; 71.1-73.3,Aube; raccord sur lumière,VO06a VO06b,Rotations; tintements; montée
+07,01:16,01:28,12,2280-2639,Présentation des auteurs,45,Travelling latéral lent; parallaxe,452 (notices),79.5-86.5,Portraits > vignettes (élément partagé),VO07a VO07b,Entrées feutrées; tintements
+08,01:28,01:45,17,2640-3149,Signature et contacts,45,Stabilisation; immobilité relative finale,"1, 452, 3",97.8-105.0,Image finale tenue,VO08a-c,Poses; tics; touches
