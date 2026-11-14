@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#0b2545"/>
+  <path d="M150 380V262c0-59 47-106 106-106s106 47 106 106v118" fill="none" stroke="#d4af37" stroke-width="8"/>
+  <text x="256" y="306" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="80" fill="#faf9f6" letter-spacing="-3">BSG</text>
+  <line x1="206" y1="334" x2="306" y2="334" stroke="#d4af37" stroke-width="3"/>
+</svg>

@@ -1,0 +1,32 @@
+# Déploiement en un clic sur Render (Blueprint) : site + worker dans un même service, disque persistant.
+# Seuls ADMIN_EMAIL et ADMIN_PASSWORD sont demandés ; le reste est automatique.
+services:
+  - type: web
+    name: ministere-dr-silas-gbavou
+    runtime: node
+    plan: starter
+    branch: main
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build
+    startCommand: node scripts/serve.mjs
+    healthCheckPath: /hors-ligne
+    disk:
+      name: donnees
+      mountPath: /var/data
+      sizeGB: 5
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: DATABASE_PATH
+        value: /var/data/ministere.sqlite
+      - key: STORAGE_DIR
+        value: /var/data/storage
+      - key: SITE_AUDIENCE
+        value: private
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false

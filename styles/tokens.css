@@ -1,0 +1,106 @@
+/* ==========================================================================
+   Tokens — « Maison d'édition théologique »
+   Primitifs → sémantiques → composants. Toute valeur répétée vit ici.
+   ========================================================================== */
+:root {
+  /* — Primitifs : couleurs de la charte — */
+  --night-900: #0b2545;      /* bleu nuit sacerdotal */
+  --night-800: #13315c;
+  --night-700: #1d4073;
+  --celestial-500: #5b8fc7;  /* bleu céleste des voiles (décor) */
+  --celestial-600: #3d6fa6;  /* céleste lisible sur clair (4.96:1 sur albâtre, mesuré) */
+  --celestial-100: #e4eef8;
+  --gold-500: #d4af37;       /* or : filets/détails (2.0:1 sur albâtre : jamais pour du texte clair) ; 7.3:1 sur bleu nuit */
+  --gold-700: #8a6d12;       /* or lisible pour texte (4.66:1 sur albâtre, mesuré) */
+  --amber-300: #f1d9a6;      /* reflet ambré */
+  --alabaster: #faf9f6;
+  --study-cream: #faf8f5;
+  --white: #ffffff;
+  --ink-900: #1e293b;
+  --ink-700: #3c4a5e;        /* texte secondaire (8.55:1, mesuré) */
+  --ink-500: #5d6b80;        /* texte discret (5.14:1, mesuré) */
+  --danger-700: #9b2c2c;
+  --success-700: #2f6b3a;
+
+  /* — Sémantiques — */
+  --color-bg: var(--alabaster);
+  --color-bg-study: var(--study-cream);
+  --color-surface: var(--white);
+  --color-text: var(--ink-900);
+  --color-text-muted: var(--ink-700);
+  --color-text-subtle: var(--ink-500);
+  --color-heading: var(--night-900);
+  --color-brand: var(--night-900);
+  --color-link: var(--night-800);
+  --color-accent-line: var(--gold-500);
+  --color-accent-text: var(--gold-700);
+  --color-border: rgb(11 37 69 / 0.14);
+  --color-border-strong: rgb(11 37 69 / 0.32);
+  --color-focus: #1a5fb4;
+  --color-danger: var(--danger-700);
+  --color-success: var(--success-700);
+
+  /* — Typographie — */
+  --font-display: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-text: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --tracking-display: -0.022em;
+  --leading-display: 1.12;
+  --leading-text: 1.72;
+  /* Échelle modulaire fluide (≈ 1.25 mobile → 1.333 bureau), bornée pour 320 px. */
+  --step--1: clamp(0.84rem, 0.82rem + 0.1vw, 0.9rem);
+  --step-0: clamp(1rem, 0.98rem + 0.12vw, 1.0625rem);
+  --step-1: clamp(1.15rem, 1.1rem + 0.3vw, 1.33rem);
+  --step-2: clamp(1.4rem, 1.3rem + 0.55vw, 1.78rem);
+  --step-3: clamp(1.72rem, 1.55rem + 0.95vw, 2.37rem);
+  --step-4: clamp(2.1rem, 1.8rem + 1.6vw, 3.16rem);
+  --step-5: clamp(2.5rem, 2rem + 2.6vw, 4.2rem);
+
+  /* — Espacements (échelle 4 → 128) — */
+  --space-1: 0.25rem;  --space-2: 0.5rem;  --space-3: 0.75rem; --space-4: 1rem;
+  --space-5: 1.5rem;   --space-6: 2rem;    --space-7: 3rem;    --space-8: 4rem;
+  --space-9: 5rem;     --space-10: 6rem;   --space-11: 8rem;
+  --gutter: clamp(1rem, 0.6rem + 2vw, 2.5rem);
+  --section: clamp(3rem, 2rem + 5vw, 7rem);
+
+  /* — Conteneurs — */
+  --measure: 68ch;
+  --container-reading: 44rem;
+  --container-standard: 72rem;
+  --container-wide: 86rem;
+
+  /* — Formes : rayons volontairement différenciés — */
+  --radius-hairline: 2px;
+  --radius-control: 6px;
+  --radius-panel: 10px;
+  --radius-arch: 999px 999px var(--radius-hairline) var(--radius-hairline);
+
+  /* — Élévation : ombres multicouches sobres — */
+  --shadow-1: 0 1px 2px rgb(11 37 69 / 0.06), 0 1px 1px rgb(11 37 69 / 0.04);
+  --shadow-2: 0 2px 4px rgb(11 37 69 / 0.05), 0 8px 24px -8px rgb(11 37 69 / 0.16);
+  --shadow-book: 1px 1px 0 rgb(11 37 69 / 0.25), 4px 6px 10px -2px rgb(11 37 69 / 0.22), 14px 22px 34px -14px rgb(11 37 69 / 0.35);
+
+  /* — Mouvement — */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-editorial: cubic-bezier(0.33, 0, 0.15, 1);
+  --dur-fast: 180ms;
+  --dur-base: 240ms;
+  --dur-editorial: 360ms;
+
+  /* — Plans — */
+  --z-base: 0;
+  --z-sticky: 20;
+  --z-header: 30;
+  --z-overlay: 40;
+  --z-sheet: 50;
+  --z-toast: 60;
+
+  --header-h: 4.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-editorial: 0ms;
+  }
+}

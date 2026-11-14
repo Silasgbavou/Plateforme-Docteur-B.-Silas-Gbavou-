@@ -1,0 +1,27 @@
+node_modules/
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+next-env.d.ts
+# Données locales : base SQLite, fichiers d'éditions (PDF), exports — jamais commités (dépôt public)
+data/
+storage/
+backups/
+.env
+.env.*
+!.env.example
+public/pdf.worker.min.mjs
+
+# État local des kits de design (garder seulement les dérogations motivées)
+.taste-skill/*
+!.taste-skill/waivers.json
+# Médias de démonstration du kit Taste (photos sous licence tierce, ~38 Mo) : réinstallés avec le skill, jamais republiés ici
+.agents/skills/design-taste-frontend/assets/**/*.jpg
+.agents/skills/design-taste-frontend/assets/**/*.jpeg
+.agents/skills/design-taste-frontend/assets/**/*.webp
+.agents/skills/design-taste-frontend/assets/**/*.png
+.agents/skills/design-taste-frontend/assets/**/*.avif
+.agents/skills/design-taste-frontend/assets/**/*.mp4
