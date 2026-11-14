@@ -6,10 +6,10 @@ export const metadata: Metadata = { title: "Consultation privée", robots: { ind
 
 export default function DiscussionPage() {
   return (
-    <div className="section">
+    <div className="section discussion-page">
       <div className="container container--reading">
         <header className="page-head">
-          <h1>Écrire au ministère</h1>
+          <h1>Consultation privée</h1>
           <p className="lead">
             Cet échange est distinct du moteur d&apos;étude : il est lu par le ministère, qui vous répond ici lorsqu&apos;il le peut.
             Aucune réponse immédiate n&apos;est garantie.

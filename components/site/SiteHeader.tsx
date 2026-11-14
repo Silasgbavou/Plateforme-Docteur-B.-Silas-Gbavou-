@@ -1,25 +1,23 @@
 import Link from "next/link";
 import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
+import { ArchMark } from "@/components/wax/ArchMark";
 
 export const NAV_ITEMS = [
   { href: "/bibliotheque", label: "Bibliothèque" },
   { href: "/enseignements", label: "Enseignements" },
   { href: "/etude", label: "Étude" },
   { href: "/discussion", label: "Consultation" },
-  { href: "/#contact", label: "Contact" },
 ] as const;
 
 export function SiteHeader() {
   return (
     <header className="site-header">
-      <div className="container container--wide site-header__inner">
-        <Link href="/" className="wordmark" aria-label="Accueil — Ministère d'Enseignement du Docteur B. Silas Gbavou">
-          <span className="wordmark__monogram" aria-hidden="true">BSG</span>
-          <span className="wordmark__text">
-            <span className="wordmark__name">Dr B. Silas Gbavou</span>
-            <span className="wordmark__sub">Ministère d&apos;Enseignement</span>
-          </span>
+      <div className="container container--wide wrap site-header__inner">
+        <a className="skip-link" href="#contenu">Aller au contenu</a>
+        <Link href="/" className="wordmark" aria-label="Accueil, Ministère d'Enseignement du Docteur B. Silas Gbavou">
+          <ArchMark size={26} className="wordmark__mark" />
+          <span className="wordmark__name" translate="no">Dr B. Silas Gbavou</span>
         </Link>
         <nav aria-label="Navigation principale" className="site-nav">
           <ul>
@@ -30,7 +28,8 @@ export function SiteHeader() {
             ))}
           </ul>
         </nav>
-        <MobileNav items={NAV_ITEMS.map((i) => ({ href: i.href, label: i.label }))} />
+        <Link href="/bibliotheque" className="btn btn--gold btn--nav">Recevoir un livre</Link>
+        <MobileNav items={[...NAV_ITEMS.map((i) => ({ href: i.href, label: i.label })), { href: "/bibliotheque", label: "Recevoir un livre" }]} />
       </div>
     </header>
   );

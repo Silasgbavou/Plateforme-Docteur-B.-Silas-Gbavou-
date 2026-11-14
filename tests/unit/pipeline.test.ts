@@ -122,3 +122,12 @@ describe("édition immuable → extraction serveur → publication → recherche
     expect(a?.event === "answer" && a.data.answer.kind).toBe("insuffisant");
   });
 });
+
+describe("couverture réelle", () => {
+  it("l'extraction tire la couverture de la première page du PDF", async () => {
+    const row = db().prepare("SELECT cover_key AS key, cover_source AS source, cover_width AS w FROM works WHERE id = 'sept-montagnes'").get() as { key: string | null; source: string | null; w: number | null };
+    expect(row.source).toBe("edition");
+    expect(row.key).toMatch(/^couvertures\/sept-montagnes-.*\.webp$/);
+    expect(row.w).toBeGreaterThan(100);
+  });
+});

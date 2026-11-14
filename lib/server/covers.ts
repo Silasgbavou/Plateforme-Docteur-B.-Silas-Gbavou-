@@ -14,11 +14,11 @@ function isImage(b: Uint8Array) {
 }
 
 /** Couverture réelle : signature vérifiée, ré-encodée en WebP 900 px max (métadonnées EXIF retirées). */
-export async function saveCover(workId: string, data: Uint8Array) {
+export async function saveCover(workId: string, data: Uint8Array, source: "televersement" | "edition" = "televersement") {
   if (data.byteLength > MAX) throw new Error("Image trop volumineuse (8 Mo maximum).");
   if (!isImage(data)) throw new Error("Format non reconnu : JPEG, PNG ou WebP attendu.");
   const out = await sharp(data, { limitInputPixels: 40_000_000 }).rotate().resize({ width: 900, height: 1350, fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer({ resolveWithObject: true });
   const key = `couvertures/${workId}-${sha256(out.data).slice(0, 16)}.webp`;
   await putObject(key, out.data).catch((e: NodeJS.ErrnoException) => { if (e.code !== "EEXIST") throw e; });
-  db().prepare("UPDATE works SET cover_key = ?, cover_width = ?, cover_height = ? WHERE id = ?").run(key, out.info.width, out.info.height, workId);
+  db().prepare("UPDATE works SET cover_key = ?, cover_width = ?, cover_height = ?, cover_source = ? WHERE id = ?").run(key, out.info.width, out.info.height, source, workId);
 }

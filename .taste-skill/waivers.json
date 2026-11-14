@@ -1,0 +1,22 @@
+[
+  {
+    "check": "row-lines",
+    "target": "main#contenu > section.fabric-hero.screen > div.selvedge",
+    "reason": "Lisière décorative du pagne (aria-hidden) : bande fixe qui répète le nom comme le bord d'une étoffe tissée, ni carrousel ni défilement ; aucun contenu n'y est caché (direction choisie par le propriétaire)."
+  },
+  {
+    "check": "row-lines",
+    "target": "footer#contact > div.selvedge",
+    "reason": "Même lisière décorative du pagne au bas du site (aria-hidden), bande fixe et non un carrousel ; aucun contenu n'y est coupé."
+  },
+  {
+    "check": "cut-text",
+    "target": "section.fabric-hero.screen > div.selvedge",
+    "reason": "La lisière décorative (aria-hidden) court d'un bord à l'autre comme le bord d'une étoffe : le nom y est répété, il est lisible en entier dans le titre et l'en-tête ; aucune information n'est coupée."
+  },
+  {
+    "check": "phone-number",
+    "target": "ul.contact-list.contact-list--compact",
+    "reason": "Le numéro WhatsApp +229 01 67 96 00 94 est le contact réel du ministère, donné par le propriétaire dans le brief (PRODUCT.md, Brand Commitments) : il doit rester affiché et composable."
+  }
+]

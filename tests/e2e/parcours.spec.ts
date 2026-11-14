@@ -25,10 +25,10 @@ test.describe.serial("parcours principaux", () => {
     for (const label of ["Enseignements Prophétiques", "Enseignements Spirituels", "Enseignements Doctrinaux"]) {
       await expect(page.locator(".cartouche__title", { hasText: label })).toHaveCount(1);
     }
-    await expect(page.locator(".site-footer__legal")).toHaveText(FOOTER);
+    await expect(page.locator(".closing__legal")).toHaveText(FOOTER);
     const fb = page.locator(`#contact a[href="https://www.facebook.com/share/1K1YwTnvhu/"]`);
     await expect(fb).toContainText("Docteur B. Silas Gbavou");
-    await expect(page.locator(`#contact a[href="https://wa.me/2290167960094"]`)).toContainText("+229 01 67 96 00 94");
+    await expect(page.locator(`#contact .contact-list a[href="https://wa.me/2290167960094"]`)).toContainText("+229 01 67 96 00 94");
     await expect(page.locator(`#contact a[href="mailto:Silasgbavou@gmail.com"]`)).toBeVisible();
     // Aucune URL brute affichée à la place des noms
     await expect(page.getByText("https://", { exact: false })).toHaveCount(0);

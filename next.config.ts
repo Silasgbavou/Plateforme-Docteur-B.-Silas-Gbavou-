@@ -23,7 +23,7 @@ const csp = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  serverExternalPackages: ["better-sqlite3", "pdfjs-dist", "sharp"],
+  serverExternalPackages: ["better-sqlite3", "pdfjs-dist", "sharp", "@napi-rs/canvas"],
   experimental: { serverActions: { bodySizeLimit: "90mb" } },
   async headers() {
     return [

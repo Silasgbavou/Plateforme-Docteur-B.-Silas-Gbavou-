@@ -7,6 +7,7 @@ import "@fontsource/plus-jakarta-sans/latin-600.css";
 import "@/styles/tokens.css";
 import "@/styles/base.css";
 import "@/styles/components.css";
+import "@/styles/wax.css";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { PwaRegistrar } from "@/components/site/PwaRegistrar";
@@ -30,7 +31,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr">
       <body>
-        <a className="skip-link" href="#contenu">Aller au contenu</a>
         <SiteHeader />
         <main id="contenu" tabIndex={-1}>
           {children}

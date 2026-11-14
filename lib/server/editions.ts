@@ -7,6 +7,8 @@ import { chunkPage, CHUNKER_VERSION } from "./chunker";
 import { enqueue, heartbeat, type Job } from "./jobs";
 import { getEdition } from "./catalog";
 import { embeddingConfigured, embeddingSpace } from "./embeddings";
+import { renderFirstPage } from "./pdf-cover";
+import { saveCover } from "./covers";
 
 export const MAX_PDF_BYTES = 80 * 1024 * 1024;
 
@@ -91,6 +93,13 @@ export async function runExtractJob(job: Job, owner: string) {
       `UPDATE editions SET page_count = ?, pages_without_text = ?, extraction_status = ? WHERE id = ?`,
     ).run(pageCount, empty, empty === 0 ? "terminee" : empty === pageCount ? "echec" : "partielle", editionId);
   })();
+
+  // Vraie couverture : la première page du fichier, si l'œuvre n'a pas déjà une couverture téléversée.
+  const cover = d.prepare("SELECT cover_key AS key, cover_source AS source FROM works WHERE id = ?").get(edition.workId) as { key: string | null; source: string | null };
+  if (!cover.key || cover.source === "edition") {
+    const png = await renderFirstPage(data);
+    if (png) await saveCover(edition.workId, png, "edition").catch(() => undefined);
+  }
 
   if (embeddingConfigured()) {
     enqueue("passages.embed", { space: embeddingSpace() }, `passages.embed:${embeddingSpace()}`);

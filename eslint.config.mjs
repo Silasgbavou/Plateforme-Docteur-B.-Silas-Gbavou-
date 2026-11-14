@@ -2,7 +2,7 @@ import next from "eslint-config-next/core-web-vitals";
 import ts from "eslint-config-next/typescript";
 
 const config = [
-  { ignores: [".next/**", "node_modules/**", "public/pdf.worker.min.mjs", "public/sw.js", "data/**", "storage/**", "playwright-report/**", "test-results/**", "next-env.d.ts"] },
+  { ignores: [".next/**", "node_modules/**", "public/pdf.worker.min.mjs", "public/sw.js", "data/**", "storage/**", "playwright-report/**", "test-results/**", "next-env.d.ts", "agent/**", ".agents/**", ".claude/**", ".impeccable/**", ".taste-skill/**"] },
   ...next,
   ...ts,
   {
